@@ -1,31 +1,28 @@
-export interface CommentReply {
-  userId: {
-    _id: string
-    email: string
-    profileImage?: string
-    firstName?: string
-    lastName?: string
-    createdAt?: string
-  }
+import type { Reply } from '@/types/reply'
+
+export interface CommentData {
+  user_id: number
+  blog_id: string
   content: string
-  _id: string
+  updated_at: string
+  created_at: string
+  id: number
+  replies: Reply[]
 }
+
 export interface RequestBodyComment {
   content: string
+  blog_id: string
 }
-export interface CommentData {
-  _id: string
-  userId: {
-    _id: string
-    email: string
-    profileImage: string
-    firstName: string
-    lastName: string
-  }
-  blogId: string
+export interface RequestUpdateComment {
   content: string
-  deleted: boolean
-  reply: CommentReply[]
-  createdAt: string
-  updatedAt: string
+}
+export interface ResponseCreateComment {
+  data: CommentData
+  message: string
+}
+
+export interface ResponseCommentData {
+  data: CommentData[]
+  message: string
 }

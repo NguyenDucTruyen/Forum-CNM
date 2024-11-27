@@ -2,10 +2,11 @@ import type { Category } from './category'
 import type { UserData } from './user'
 
 export interface RequestCreateBlog {
-  category: string
+  category_id: string
   title: string
   content: string
-  blogImages: string[]
+  blogImage: string
+  statusBlog: string
 }
 
 export interface Reaction {
@@ -14,31 +15,25 @@ export interface Reaction {
   reaction: string
 }
 export interface BlogData {
-  _id: string
-  userId: UserData
-  category: Category
+  user_id: string
+  category_id: string
   title: string
   content: string
-  blogImage: any[]
-  status: string
-  reactionCount: number
-  deleted: boolean
-  reaction: Reaction[]
-  createdAt: string
-  updatedAt: string
+  blogImage: string
+  statusBlog: string
+  updated_at: string
+  created_at: string
+  id: number
 }
-
+export interface ResponseCreateBlog {
+  data: BlogData
+  message: string
+  status: string
+}
 export interface ResponseBlogData {
-  docs: BlogData[]
-  hasNextPage: boolean
-  hasPrevPage: boolean
-  limit: number
-  nextPage: number | null
-  page: number
-  pagingCounter: number
-  prevPage: number | null
-  totalDocs: number
-  totalPages: number
+  data: BlogData[]
+  message: string
+  status: string
 }
 
 export const isActiveEnum = {

@@ -1,22 +1,29 @@
-import type { BlogData, RequestCreateBlog, ResponseBlogData } from '@/types'
-import { $get, $patch, $post } from './axios'
+import type { BlogData, RequestCreateBlog, ResponseBlogData, ResponseCreateBlog } from '@/types'
+import { $delete, $get, $patch, $post, $put } from './axios'
 
 export async function apiGetBlogs(config: any): Promise<ResponseBlogData> {
-  return $get('/blogs', config)
+  return $get('/getListBlog', config)
 }
-export async function apiCreateBlog(data: RequestCreateBlog): Promise<ResponseBlogData> {
-  return $post('/blogs', data)
+export async function apiCreateBlog(data: RequestCreateBlog): Promise<ResponseCreateBlog> {
+  return $post('/createBlog', data)
 }
 
-export async function apiGetBlogById(id: string): Promise<BlogData> {
-  return $get(`/blogs/${id}`)
+// export async function apiGetBlogById(id: string): Promise<BlogData> {
+//   return $get(`/blogs/${id}`)
+// }
+
+export async function apiUpdateBlog(id: string, data: RequestCreateBlog): Promise<ResponseCreateBlog> {
+  return $put(`/updateBlog/${id}`, data)
 }
-export async function apiGetNewBlogs(config: any): Promise<ResponseBlogData> {
-  return $get('/blogs/newest', config)
+
+export async function apiDeleteBlog(id: string): Promise<void> {
+  return $delete(`/deleteBlog/${id}`)
 }
-export async function apiGetPopularBlogs(config: any): Promise<ResponseBlogData> {
-  return $get('/blogs/popular', config)
+
+export function apiGetBlogByCategory(idCategory: string, config: any): Promise<ResponseBlogData> {
+  return $get(`/getBlogCategory/${idCategory}`, config)
 }
-export async function apiReactionsBlog(id: string, reaction: string): Promise<BlogData> {
-  return $patch(`/blogs/${id}`, { reaction })
+
+export function apiGetBlogByUser(idUser: string, config: any): Promise<ResponseBlogData> {
+  return $get(`/getBlogUser/${idUser}`, config)
 }

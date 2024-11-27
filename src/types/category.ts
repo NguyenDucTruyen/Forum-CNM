@@ -1,24 +1,23 @@
 import type { BlogData } from './blog'
 
 export interface Category {
-  _id: string
-  name: string
-  status: string
-  slug: string
-  createdAt: string
-  updatedAt: string
-  description: string
+  categoryName: string
+  updated_at: string
+  created_at: string
+  id: string
 }
 
-export interface ResponseCategoryBlogs extends Category {
-  blogs: BlogData[]
-  hasNextPage: boolean
-  hasPrevPage: boolean
-  limit: number
-  nextPage: number | null
-  page: number
-  pagingCounter: number
-  prevPage: number | null
-  totalDocs: number
-  totalPages: number
+export interface RequestCreateCategory {
+  categoryName: string
+}
+
+export interface ResponseCreateCategory {
+  message: string
+  status: string
+  data: Category
+}
+export interface ResponseCategoryData {
+  message: string
+  status: string
+  data: Category[]
 }
