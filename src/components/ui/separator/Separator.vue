@@ -4,7 +4,7 @@ import { Separator, type SeparatorProps } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 
 const props = defineProps<
-  SeparatorProps & { class?: HTMLAttributes['class'], label?: string, labelStyle: string }
+  SeparatorProps & { class?: HTMLAttributes['class'], label?: string, labelStyle?: string }
 >()
 
 const delegatedProps = computed(() => {

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { BlogData, ResponseBlogData } from '@/types'
 import { useBlogStore } from '@/stores/blog'
+import { useCategoryStore } from '@/stores/category'
 import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
 const blogStore = useBlogStore()
 const userStore = useUserStore()
+const categoryStore = useCategoryStore()
 
 const isLoading = ref(true)
 const blogs = ref<ResponseBlogData | null>()
@@ -26,9 +28,14 @@ watch(route, async (newVal) => {
     container.scrollTo({ top: 0, behavior: 'smooth' })
   query.value.page = Number(newVal.query.page)
   isLoading.value = true
+
+  if (!categoryStore.categories) {
+    await categoryStore.getCategories()
+  }
   blogs.value = await blogStore.getBlogs({ params: query.value }) as ResponseBlogData
   isLoading.value = false
 }, { immediate: true })
+
 function handleUpdateQuery() {
   if (!query.value.title)
     return

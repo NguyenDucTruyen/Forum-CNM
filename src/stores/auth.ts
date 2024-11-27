@@ -1,5 +1,5 @@
 import type { EmailData, LoginData, RegisterData, ResetPasswordData } from '@/types'
-import { apiLogin, apiRegister, forgotPassword, requestResetPassword } from '@/api/auth'
+import { apiLogin, apiLoginWithGoogle, apiRegister, forgotPassword, requestResetPassword } from '@/api/auth'
 import { defineStore } from 'pinia'
 import { useUserStore } from './user'
 
@@ -12,6 +12,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(credentials: LoginData) {
     const data = await apiLogin(credentials)
+    localStorage.setItem('access_token', data.access_token)
+    await userStore.getMe()
+    router.push(returnUrl.value || '/home')
+    returnUrl.value = ''
+  }
+
+  async function loginWithGoogle(access_token: string) {
+    const data = await apiLoginWithGoogle({ access_token })
     localStorage.setItem('access_token', data.access_token)
     await userStore.getMe()
     router.push(returnUrl.value || '/home')
@@ -42,6 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     isAuthenticated,
     login,
+    loginWithGoogle,
     logout,
     register,
     returnUrl,

@@ -6,7 +6,7 @@ import { BookText, CloudUpload, X } from 'lucide-vue-next'
 
 const categoryStore = useCategoryStore()
 onMounted(async () => {
-  await categoryStore.fetchCategories()
+  await categoryStore.getCategories()
 })
 const userStore = useUserStore()
 const items = ref([
@@ -17,18 +17,21 @@ const items = ref([
     url: '/home',
   },
   {
-    id: 1,
-    title: 'Newest and Recent',
-    icon: 'IconNew',
-    url: '/blogs/newest',
-  },
-  {
-    id: 2,
-    title: 'Popular of the day',
-    icon: 'IconPopular',
-    url: '/blogs/popular',
+    id: 3,
+    title: 'Admin Management',
+    icon: 'IconAdmin',
+    url: '/admin',
+    admin: true,
   },
 ])
+const accessibleItems = computed(() => {
+  return items.value.filter((item) => {
+    if (item.admin) {
+      return userStore.user?.roleName === 'admin'
+    }
+    return true
+  })
+})
 const isOpen = ref(false)
 </script>
 
@@ -75,8 +78,8 @@ const isOpen = ref(false)
         </div>
       </div>
     </Transition>
-    <div class="flex gap-2 lg:hidden">
-      <template v-for="item in items" :key="item.id">
+    <div class="flex gap-2">
+      <template v-for="item in accessibleItems" :key="item.id">
         <Navigator :to="item.url" :icon="item.icon" />
       </template>
     </div>

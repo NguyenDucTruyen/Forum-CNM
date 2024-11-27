@@ -31,7 +31,6 @@ const onSubmit = form.handleSubmit(async (values) => {
   catch (error: Error | any) {
     const data = error?.response?.data
     const errorMessage = data?.error || data?.message[0]?.message || data?.message || 'Some thing went wrong'
-    console.log('error', errorMessage)
     toast({
       title: 'Error',
       description: errorMessage,
@@ -43,8 +42,22 @@ const onSubmit = form.handleSubmit(async (values) => {
     isLoading.value = false
   }
 })
-const callback: CallbackTypes.TokenResponseCallback = (response) => {
-  console.log('Access token:', response.access_token)
+const callback: CallbackTypes.TokenResponseCallback = async (response) => {
+  try {
+    isLoading.value = true
+    await authStore.loginWithGoogle(response.access_token)
+  }
+  catch {
+    toast({
+      title: 'Error',
+      description: 'Some thing went wrong',
+      variant: 'destructive',
+      duration: 5000,
+    })
+  }
+  finally {
+    isLoading.value = false
+  }
 }
 </script>
 

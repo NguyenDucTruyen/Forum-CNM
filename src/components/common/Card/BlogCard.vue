@@ -1,18 +1,33 @@
 <script setup lang="ts">
-import type { BlogData, Reaction, UserData } from '@/types'
+import type { BlogData, Category, UserData } from '@/types'
+import { useCategoryStore } from '@/stores/category'
 
 const props = defineProps<{
   value: BlogData
 }>()
-const like = computed(() => props.value.reaction?.filter((e: Reaction) => e.reaction === 'like').length)
-const dislike = computed(() => props.value.reaction?.filter((e: Reaction) => e.reaction === 'dislike').length)
-const formattedTime = computed(() => props.value.createdAt.split('T')[0])
+
+const categoryStore = useCategoryStore()
+
+if (!categoryStore.categories) {
+  await categoryStore.getCategories()
+}
+
+const categoryName = computed(() => {
+  // const category = categoryStore.categories?.value?.find((e: Category) => e.id === props.value.category_id)
+  const category = categoryStore.categories?.find((e: Category) => e.id === props.value.category_id)
+
+  return category?.categoryName ?? 'Uncategorized'
+})
+
+// const like = computed(() => props.value.reaction?.filter((e: Reaction) => e.reaction === 'like').length)
+// const dislike = computed(() => props.value.reaction?.filter((e: Reaction) => e.reaction === 'dislike').length)
+// const formattedTime = computed(() => props.value.createdAt.split('T')[0])
 </script>
 
 <template>
   <div class="flex bg-card text-foreground gap-5 w-full p-5 mb-5 rounded-lg cursor-pointer shadow-lg">
     <img
-      v-lazy="props.value.blogImage[0] ?? null"
+      v-lazy="props.value.blogImage ?? null"
       alt=""
       class="w-20 h-20 rounded-lg"
     >
@@ -22,7 +37,7 @@ const formattedTime = computed(() => props.value.createdAt.split('T')[0])
           {{ props.value.title }}
         </p>
         <p class="text-muted-foreground text-xs hidden sm:flex">
-          Author: {{ props.value.userId.email }}
+          Author: {{ props.value.user_id }}
         </p>
       </div>
 
@@ -32,11 +47,11 @@ const formattedTime = computed(() => props.value.createdAt.split('T')[0])
             Category:
           </span>
           <div class="bg-muted text-muted-foreground rounded-lg px-2 py-1 text-xs font-medium">
-            {{ props.value.category?.name ?? 'Uncategorized' }}
+            {{ categoryName }}
           </div>
         </div>
         <div class="flex gap-5">
-          <p class="text-muted-foreground text-xs">
+          <!-- <p class="text-muted-foreground text-xs">
             {{ like }} Likes
           </p>
           <p class="text-muted-foreground text-xs">
@@ -44,7 +59,7 @@ const formattedTime = computed(() => props.value.createdAt.split('T')[0])
           </p>
           <p class="text-muted-foreground text-xs hidden sm:flex">
             {{ formattedTime }}
-          </p>
+          </p> -->
         </div>
       </div>
     </div>

@@ -10,18 +10,6 @@ const items = ref([
     url: '/home',
   },
   {
-    id: 1,
-    title: 'Newest and Recent',
-    icon: 'IconNew',
-    url: '/blogs/newest',
-  },
-  {
-    id: 2,
-    title: 'Popular of the day',
-    icon: 'IconPopular',
-    url: '/blogs/popular',
-  },
-  {
     id: 3,
     title: 'Admin Management',
     icon: 'IconAdmin',
@@ -32,7 +20,7 @@ const items = ref([
 const accessibleItems = computed(() => {
   return items.value.filter((item) => {
     if (item.admin) {
-      return userStore.user?.roleName === 'ADMIN'
+      return userStore.user?.roleName === 'admin'
     }
     return true
   })

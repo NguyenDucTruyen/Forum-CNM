@@ -19,6 +19,9 @@ export function requestResetPassword(data: ResetPasswordData) {
     confirmPassword: data.confirmPassword,
   })
 }
+export function apiLoginWithGoogle(data: { access_token: string }) {
+  return $post('/auth/google-login', data)
+}
 
 export function logout() {
   return $post('/auth/logout', {})

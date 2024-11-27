@@ -6,8 +6,8 @@ export async function apiGetMe() {
   const access_token = localStorage.getItem('access_token')
   if (!access_token)
     return null
-  const { aud } = jwtDecode(access_token)
-  return $get(`/auth/getDetail/${aud}`)
+  const { sub } = jwtDecode(access_token)
+  return $get(`/auth/getDetail/${sub}`)
 }
 export async function apiGetUserData(userId: string) {
   return $get(`/auth/getDetail/${userId}`)
