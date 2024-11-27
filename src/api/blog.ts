@@ -5,7 +5,7 @@ export async function apiGetBlogs(config: any): Promise<ResponseBlogData> {
   return $get('/getListBlog', config)
 }
 export async function apiCreateBlog(data: RequestCreateBlog): Promise<ResponseCreateBlog> {
-  return $post('/createBlog', data)
+  return $post('/createBlog', { ...data, statusBlog: 'pending' })
 }
 
 // export async function apiGetBlogById(id: string): Promise<BlogData> {

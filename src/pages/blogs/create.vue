@@ -9,6 +9,7 @@
 </route>
 
 <script setup lang="ts">
+import type { RequestCreateBlog } from '@/types'
 import { uploadImage } from '@/api/upload'
 import {
   Select,
@@ -31,7 +32,9 @@ import { z } from 'zod'
 const categoryStore = useCategoryStore()
 const blogStore = useBlogStore()
 onMounted(async () => {
-  await categoryStore.fetchCategories()
+  if (!categoryStore.categories) {
+    await categoryStore.getCategories()
+  }
 })
 
 const isLoading = ref(false)
@@ -70,14 +73,14 @@ const onSubmit = handleSubmit(async (values) => {
   const response = await uploadImage(file.value as File)
   const body = {
     title: values.title,
-    category: values.category,
+    category_id: values.category,
     content: content.value,
-    blogImages: [response.url],
+    blogImage: response.url,
   }
-  await blogStore.createBlog(body)
+  await blogStore.createBlog(body as RequestCreateBlog)
   toast({
     title: 'Success',
-    description: 'Blog created successfully, wait for the admin to approve it.',
+    description: 'Blog created successfully.',
   })
   resetData()
   isLoading.value = false
@@ -163,10 +166,10 @@ function updateContent(newContent: string) {
                 <SelectGroup>
                   <SelectItem
                     v-for="category in categoryStore.categories"
-                    :key="category._id"
-                    :value="category._id"
+                    :key="category.id"
+                    :value="category.id.toString()"
                   >
-                    {{ category.name }}
+                    {{ category.categoryName }}
                   </SelectItem>
                 </SelectGroup>
               </SelectContent>
