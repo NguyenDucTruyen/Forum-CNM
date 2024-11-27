@@ -1,32 +1,43 @@
 import type { BlogData, RequestCreateBlog, ResponseBlogData } from '@/types'
-import { apiCreateBlog, apiGetBlogById, apiGetBlogs, apiGetNewBlogs, apiGetPopularBlogs, apiReactionsBlog } from '@/api/blog'
+import { apiCreateBlog, apiDeleteBlog, apiGetBlogByCategory, apiGetBlogByUser, apiGetBlogs, apiUpdateBlog } from '@/api/blog'
+import { apiDislikeBlog, apiLikeBlog } from '@/api/reaction'
 import { defineStore } from 'pinia'
 
 export const useBlogStore = defineStore('blog', () => {
   function getBlogs(config: any): Promise<ResponseBlogData> {
     return apiGetBlogs(config)
   }
-  function getNewBlogs(config: any): Promise<ResponseBlogData> {
-    return apiGetNewBlogs(config)
-  }
-  function getPopularBlogs(config: any): Promise<ResponseBlogData> {
-    return apiGetPopularBlogs(config)
-  }
   function createBlog(data: RequestCreateBlog) {
     return apiCreateBlog(data)
   }
-  function getBlogById(id: string): Promise<BlogData> {
-    return apiGetBlogById(id)
+  function updateBlog(id: string, data: RequestCreateBlog) {
+    return apiUpdateBlog(id, data)
   }
-  function reactionBlog(id: string, reaction: string): Promise<BlogData> {
-    return apiReactionsBlog(id, reaction)
+  function deleteBlog(id: string) {
+    return apiDeleteBlog(id)
+  }
+  function getBlogByUser(user_id: string, config: any) {
+    return apiGetBlogByUser(user_id, config)
+  }
+  function getBlogByCategory(category: string, config: any) {
+    return apiGetBlogByCategory(category, config)
+  }
+
+  // Reaction
+  function likeBlog(blog_id: string) {
+    return apiLikeBlog({ blog_id })
+  }
+  function dislikeBlog(blog_id: string) {
+    return apiDislikeBlog({ blog_id })
   }
   return {
     getBlogs,
     createBlog,
-    getBlogById,
-    getNewBlogs,
-    reactionBlog,
-    getPopularBlogs,
+    likeBlog,
+    dislikeBlog,
+    updateBlog,
+    deleteBlog,
+    getBlogByUser,
+    getBlogByCategory,
   }
 })

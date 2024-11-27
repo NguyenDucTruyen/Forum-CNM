@@ -1,23 +1,36 @@
-import type { CommentData, CommentReply, RequestBodyComment } from '@/types'
+import type { CommentData, RequestBodyComment, RequestCreateReply, RequestUpdateReply } from '@/types'
 
-import { apiCreateComment, apiCreateReplyComment, apiDeleteCommentById, apitGetCommentByBlogId, apiUpdateCommentById } from '@/api/comment'
+import { apiCreateComment, apiDeleteComment, apiGetComments, apiUpdateComment } from '@/api/comment'
+import { apiDeleteReply, apitCreateReply, apiUpdateReply } from '@/api/reply'
 import { defineStore } from 'pinia'
 
 export const useCommentStore = defineStore('comment', () => {
-  function getCommentByBlogId(id: string): Promise<CommentData[]> {
-    return apitGetCommentByBlogId(id)
+  // Comment
+  async function getCommentByBlogId(id: string) {
+    return apiGetComments(id)
   }
-  function createComment(id: string, data: RequestBodyComment) {
-    return apiCreateComment(id, data)
+
+  async function createComment(data: RequestBodyComment) {
+    return apiCreateComment(data)
   }
-  function updateCommentById(id: string, data: RequestBodyComment) {
-    return apiUpdateCommentById(id, data)
+
+  async function updateCommentById(id: string, data: RequestBodyComment) {
+    return apiUpdateComment(id, data)
   }
-  function createReplyComment(idComment: string, data: RequestBodyComment) {
-    return apiCreateReplyComment(idComment, data)
+  async function deleteCommentById(id: string) {
+    return apiDeleteComment(id)
   }
-  function deleteCommentById(id: string) {
-    return apiDeleteCommentById(id)
+
+  // Reply
+  async function createReplyComment(data: RequestCreateReply) {
+    return apitCreateReply(data)
+  }
+
+  async function updateReplyComment(id: string, data: RequestUpdateReply) {
+    return apiUpdateReply(id, data)
+  }
+  async function deleteReplyComment(id: string) {
+    return apiDeleteReply(id)
   }
   return {
     getCommentByBlogId,
@@ -25,5 +38,7 @@ export const useCommentStore = defineStore('comment', () => {
     updateCommentById,
     createReplyComment,
     deleteCommentById,
+    updateReplyComment,
+    deleteReplyComment,
   }
 })

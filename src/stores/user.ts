@@ -32,10 +32,6 @@ export const useUserStore = defineStore('user', () => {
     return data
   }
 
-  async function getBlogsByUser(userId: string, config: any): Promise<ResponseBlogData> {
-    return await apiGetBlogsByUser(userId, config)
-  }
-
   const isAuthenticated = computed(() => !!user.value)
   return {
     user,
@@ -46,6 +42,5 @@ export const useUserStore = defineStore('user', () => {
     changePassword,
     getUserData,
     updateUserData,
-    getBlogsByUser,
   }
 })

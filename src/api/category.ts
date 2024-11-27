@@ -7,7 +7,7 @@ export async function apiGetCategories() {
 }
 
 export async function apiCreateCategory(data: RequestCreateCategory) {
-  return $post('/createCategory', data) as Promise<ResponseCategoryData>
+  return $post('/createCategory', data) as Promise<ResponseCreateCategory>
 }
 
 export async function apiUpdateCategory(id: string, data: RequestCreateCategory) {
@@ -16,8 +16,4 @@ export async function apiUpdateCategory(id: string, data: RequestCreateCategory)
 
 export async function apiDeleteCategory(id: string) {
   return $get(`/deleteCategory/${id}`)
-}
-
-export async function apitGetCategoryBySlug(slug: string, config: any) {
-  return $get(`/categories/${slug}`, config)
 }

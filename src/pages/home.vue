@@ -74,24 +74,24 @@ function handleDeleteQuery() {
   <div v-show="isLoading && !blogs" class="flex w-full p-8 justify-center items-center">
     <Icon name="IconLoading" />
   </div>
-  <div v-if="blogs?.docs" class="flex flex-col p-6 bg-muted rounded-lg flex-1 pt-12 relative">
-    <template v-if="blogs?.docs.length">
+  <div v-if="blogs?.data" class="flex flex-col p-6 bg-muted rounded-lg flex-1 pt-12 relative">
+    <template v-if="blogs?.data.length">
       <div
-        v-for="blog in blogs?.docs"
-        :key="blog._id"
+        v-for="blog in blogs?.data"
+        :key="blog.id"
         class="blog w-full"
       >
         <BlogCard
           :value="blog"
-          :category="blog.category?.name ?? 'Uncategorized'"
-          @click="$router.push(`/blogs/${blog._id}`)"
+          :category="blog.category_id"
+          @click="$router.push(`/blogs/${blog.id}`)"
         />
       </div>
-      <PaginationTable
+      <!-- <PaginationTable
         :total="blogs?.totalDocs"
         :current-page="blogs?.page || 1"
         :items-per-page="query.limit"
-      />
+      /> -->
     </template>
     <p v-else class="text-lg text-center text-muted-foreground">
       No blog found
