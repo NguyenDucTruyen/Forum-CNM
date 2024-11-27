@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { useConfirmStore } from '@/stores/confirm'
+import { checkoutSession } from '@/api/stripe'
 
-const confirmStore = useConfirmStore()
-async function showMessage() {
-  console.log('haha')
-  const confirm = await confirmStore.showConfirmDialog({
-    title: 'Test',
-    message: 'This is a test message',
-  })
-  console.log(confirm)
+async function checkout() {
+  const response = await checkoutSession()
+  window.location.href = response.url
 }
 </script>
 
 <template>
-  <Button @click="showMessage">
-    Test
-  </Button>
+  <button @click="checkout">
+    checkout
+  </button>
 </template>

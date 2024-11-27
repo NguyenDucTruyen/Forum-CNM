@@ -41,7 +41,7 @@ catch (error) {
   router.push('/home')
 }
 
-const isAuthor = computed(() => user.value?._id === userStore.user?._id)
+const isAuthor = computed(() => user.value?.id === userStore.user?.id)
 
 const isLoading = ref(false)
 const fileInput = useTemplateRef('refInput')
@@ -52,15 +52,7 @@ const { handleSubmit, setFieldValue, resetForm } = useForm({
   validationSchema: toTypedSchema(updateProfileValidator),
 })
 const genderInitial = computed(() => {
-  if (user.value?.gender === true) {
-    return 'male'
-  }
-  else if (user.value?.gender === false) {
-    return 'female'
-  }
-  else {
-    return ''
-  }
+  return user.value?.gender ?? ''
 })
 
 const onSubmit = handleSubmit(async (values) => {
@@ -73,16 +65,17 @@ const onSubmit = handleSubmit(async (values) => {
     }
     const body = {
       ...values,
-      gender: Boolean(values.gender === 'male'),
       phone: 0,
       profileImage: url,
     }
-    const response = await userStore.updateUserData(user.value?._id as string, body)
-    user.value = response.user
+    const data = await userStore.updateUserData(body)
+
+    user.value = data
     toast({
       title: 'Success',
       description: 'Profile updated successfully',
     })
+
     resetData()
   }
   catch (error: Error | any) {
@@ -119,6 +112,8 @@ function clearImage() {
   if (user.value) {
     user.value.profileImage = ''
   }
+  if (fileInput.value)
+    fileInput.value.value = ''
   file.value = null
   previewImage.value = user.value?.profileImage || null
 }
@@ -137,7 +132,7 @@ async function confirmDeletePhoto() {
 </script>
 
 <template>
-  <form class="p-8 max-w-4xl flex-1 rounded-md" @submit.prevent="onSubmit">
+  <form v-if="user" class="p-8 max-w-4xl flex-1 rounded-md" @submit.prevent="onSubmit">
     <div class="flex flex-col items-center mb-8">
       <h1 class="text-2xl font-semibold mb-2 flex items-center gap-2">
         Profile
@@ -170,17 +165,11 @@ async function confirmDeletePhoto() {
         <ErrorMessage name="file" class="absolute w-full text-center left-1/2 translate-x-[-50%] bottom-0 text-sm font-normal text-destructive" />
       </div>
       <div class="col-span-2 grid gap-2 py-4">
-        <InputValidator
-          id="email"
-          :model-value="user?.email"
-          type="text"
-          label="Email"
-          :disabled="true"
-          name="email"
-        />
+        <Label>Email</Label>
+        <Input :model-value="user?.email ?? ''" label="Email" disabled />
         <InputValidator
           id="firstName"
-          :model-value="user?.firstName"
+          :model-value="user?.firstName ?? ''"
           type="text"
           label="First Name"
           placeholder="Enter your first name"
@@ -189,7 +178,7 @@ async function confirmDeletePhoto() {
         />
         <InputValidator
           id="lastName"
-          :model-value="user?.lastName"
+          :model-value="user?.lastName ?? ''"
           type="text"
           label="Last Name"
           placeholder="Enter your last name"

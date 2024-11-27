@@ -46,7 +46,7 @@ const nameDisplay = computed(() => {
         </div>
       </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <RouterLink :to="`/profile/${userStore.user._id}`">
+      <RouterLink :to="`/profile/${userStore.user.id}`">
         <DropdownMenuItem class="cursor-pointer">
           Profile
         </DropdownMenuItem>

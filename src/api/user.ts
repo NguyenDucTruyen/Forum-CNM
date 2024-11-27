@@ -13,7 +13,7 @@ export async function apiGetUserData(userId: string) {
   return $get(`/auth/getDetail/${userId}`)
 }
 export function apiUpdateUserData(data: RequestUpdateUser) {
-  return $post('/auth/update', data)
+  return $put('/auth/update', data)
 }
 export async function apiChangePassword(data: { password: string, newPassword: string, confirmNewPassword: string }) {
   return $post('/users/changePassword', data)

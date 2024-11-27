@@ -47,7 +47,7 @@ const isOpen = ref(false)
     <Transition name="slide">
       <div v-show="isOpen" class="fixed inset-0 bg-background/60 z-50" @click="isOpen = false">
         <div class="h-full custom-scroll mb-5 bg-background pr-4 w-full max-w-72 p-4 relative" @click.stop>
-          <X size="24" class="absolute top-4 right-4" @click="isOpen = false" />
+          <X size="24" class="absolute top-4 right-4 cursor-pointer" @click="isOpen = false" />
           <h2 class="text-foreground font-medium text-2xl p-2 pb-4 leading-5">
             Categories
           </h2>
@@ -57,20 +57,18 @@ const isOpen = ref(false)
           >
             <template
               v-for="item in categoryStore.categories"
-              :key="item._id"
+              :key="item.id"
             >
               <RouterLink
-                :to="`/blogs/category/${item.slug}`"
-                class="flex items-start gap-2 w-full rounded cursor-pointer hover:bg-secondary mb-3 p-2"
-                @click="isOpen = false"
+                :to="`/blogs/category/${item.id}`"
+                class="flex items-center gap-2 w-full rounded cursor-pointer hover:bg-secondary mb-3 p-2"
               >
                 <Icon
                   name="IconTag"
-                  class="object-contain h-8 w-8 flex justify-center items-center"
+                  class="object-contain text-primary h-6 w-6 flex justify-center items-center"
                 />
-                <div class="flex flex-col w-[calc(100%-2.5rem)] items-start gap-0.5">
-                  <span class="text-foreground font-medium text-sm leading-4">{{ item.name }}</span>
-                  <span class="text-foreground truncate font-normal w-full text-xs leading-[1.4]">{{ item.description }}</span>
+                <div class="flex w-[calc(100%-2.5rem)] items-center gap-0.5">
+                  {{ item.categoryName }}
                 </div>
               </RouterLink>
             </template>

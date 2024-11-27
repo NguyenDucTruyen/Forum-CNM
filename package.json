@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "@stripe/stripe-js": "^5.2.0",
     "@vee-validate/zod": "^4.14.6",
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^11.1.0",

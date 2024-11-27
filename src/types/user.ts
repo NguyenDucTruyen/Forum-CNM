@@ -1,22 +1,26 @@
 export interface UserData {
-  _id: string
-  firstName: string
+  id: string
+  firstName: string | null
   lastName: string
+  gender: string | null
+  phone: number | null
+  dayOfBirth: string | null
   email: string
-  isActive: string
-  roleName: string
-  createdAt: string
-  updatedAt: string
-  dayOfBirth: string
-  gender: boolean
-  phone: number
+  email_verified_at: string | null
+  google_id: string
   profileImage: string
+  isActive: boolean
+  roleName: string
+  expires_at: string | null
+  deleted_at: string | null
+  created_at: string
+  updated_at: string
 }
 
 export interface RequestUpdateUser {
   firstName: string
   lastName: string
-  gender: boolean
+  gender: string
   dayOfBirth: string
   phone: number
   profileImage: string

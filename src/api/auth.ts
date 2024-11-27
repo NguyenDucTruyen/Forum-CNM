@@ -6,7 +6,7 @@ export function apiLogin(data: LoginData) {
 }
 
 export function apiRegister(data: RegisterData) {
-  return $post('/auth/register', data)
+  return $post('/auth/register', { firstName: '', lastName: '', email: data.email, password: data.password })
 }
 
 export function forgotPassword(data: EmailData) {

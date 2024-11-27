@@ -30,7 +30,7 @@ const items = ref([
 const accessibleItems = computed(() => {
   return items.value.filter((item) => {
     if (item.author) {
-      return userStore.user?._id === route.params.id
+      return userStore.user?.id === route.params.id
     }
     return true
   })
@@ -40,12 +40,14 @@ const accessibleItems = computed(() => {
 <template>
   <div class="flex flex-col items-start gap-5">
     <div class="bg-muted rounded-lg flex lg:flex-col items-start gap-2 w-72 p-2">
-      <RouterLink to="/home?page=1" class="w-full">
-        <Button variant="link" class="w-full">
-          <ArrowLeft /> Back to Home
-        </Button>
-      </RouterLink>
-      <Separator class="mb-2" />
+      <div class="hidden lg:flex flex-col">
+        <RouterLink to="/home?page=1" class="w-full">
+          <Button variant="link" class="w-full">
+            <ArrowLeft /> Back to Home
+          </Button>
+        </RouterLink>
+        <Separator class="mb-2" />
+      </div>
       <AppSideBarItem
         v-for="item in accessibleItems"
         :key="item.id"
