@@ -80,7 +80,7 @@ const onSubmit = handleSubmit(async (values) => {
   }
   catch (error: Error | any) {
     const data = error?.response?.data
-    const errorMessage = data?.message[0]?.message || data?.message || data?.error || 'Some thing went wrong'
+    const errorMessage = data?.error || 'Some thing went wrong'
     toast({
       title: 'Error',
       description: errorMessage,

@@ -1,4 +1,4 @@
-import type { EmailData, LoginData, RegisterData, RequestUpdateUser, ResetPasswordData } from '@/types'
+import type { EmailData, LoginData, RegisterData } from '@/types'
 import { $post } from './axios'
 
 export function apiLogin(data: LoginData) {
@@ -6,23 +6,24 @@ export function apiLogin(data: LoginData) {
 }
 
 export function apiRegister(data: RegisterData) {
-  return $post('/auth/register', { firstName: '', lastName: '', email: data.email, password: data.password })
+  return $post('/auth/register', data)
+}
+
+export function apiSendOtpSignup(data: EmailData) {
+  return $post('/auth/sendOtp', data)
 }
 
 export function forgotPassword(data: EmailData) {
-  return $post('/auth/forgot-password', data)
+  return $post('/forgot-password', data)
 }
 
-export function requestResetPassword(data: ResetPasswordData) {
-  return $post(`/auth/reset-password/${data.token}`, {
-    password: data.password,
-    confirmPassword: data.confirmPassword,
-  })
+export function requestResetPassword(data: RegisterData) {
+  return $post('/reset-password', data)
 }
 export function apiLoginWithGoogle(data: { access_token: string }) {
   return $post('/auth/google-login', data)
 }
 
-export function logout() {
+export function apiLogout() {
   return $post('/auth/logout', {})
 }

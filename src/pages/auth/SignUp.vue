@@ -1,8 +1,8 @@
 <route>
   {
       meta: {
-          title: "Sign Up",
-          layout: "auth",
+      layout: "auth",
+      title: "Send OTP",
       }
   }
 </route>
@@ -10,30 +10,32 @@
 <script setup lang="ts">
 import { toast } from '@/components/ui/toast'
 import { useAuthStore } from '@/stores/auth'
-import { signupValidator } from '@/utils/validation'
+import { emailValidator } from '@/utils/validation'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 
 const router = useRouter()
 const authStore = useAuthStore()
-
+const route = useRoute()
+if (!route.query.email) {
+  router.push('/auth/signup')
+}
 const form = useForm({
-  validationSchema: toTypedSchema(signupValidator),
+  validationSchema: toTypedSchema(emailValidator),
 })
-
 const isLoading = ref(false)
 const onSubmit = form.handleSubmit(async (values) => {
   try {
-    await authStore.register(values)
+    await authStore.sendOTPSignup(values)
     toast({
       title: 'Success',
-      description: 'Account created successfully',
+      description: 'Email sent successfully, check your inbox',
     })
-    router.push('/auth/login')
+    router.push(`/auth/register-account?email=${values.email}`)
   }
   catch (error: Error | any) {
     const data = error?.response?.data
-    const errorMessage = data?.message[0]?.message || data?.message || data?.error || 'Some thing went wrong'
+    const errorMessage = data?.error || 'Some thing went wrong'
     toast({
       title: 'Error',
       description: errorMessage,
@@ -48,44 +50,39 @@ const onSubmit = form.handleSubmit(async (values) => {
 </script>
 
 <template>
-  <form class="rounded-lg border bg-card text-card-foreground shadow-sm mx-auto max-w-sm sm:min-w-[25rem] h-max" @submit.prevent="onSubmit">
-    <CardHeader>
-      <CardTitle class="text-2xl text-center">
-        Sign Up
-      </CardTitle>
-      <CardDescription class="text-center">
-        Enter your information to create an account
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div class="grid">
-        <InputValidator
-          id="email"
-          type="email"
-          label="Email"
-          placeholder="m@example.com"
-          required
-          name="email"
-        />
-        <InputValidator id="password" label="Password" placeholder="Password" type="password" name="password" />
-        <InputValidator id="confirmPassword" label="Confirm password" placeholder="Confirm Password" type="password" name="confirmPassword" />
-
-        <Button type="submit" :disabled="isLoading" class="ml-4">
-          <template v-if="isLoading">
-            <Icon name="IconLoading" />
-            Please wait
-          </template>
-          <template v-else>
-            Create an account
-          </template>
-        </Button>
-      </div>
-      <div class="mt-4 text-center text-sm">
-        Already have an account?
-        <RouterLink to="/auth/login" class="ml-1 text-balance underline">
-          Login
-        </RouterLink>
-      </div>
-    </CardContent>
+  <form class="sm:min-w-[25rem]" @submit.prevent="onSubmit">
+    <Card class="mx-auto max-w-sm">
+      <CardHeader>
+        <CardTitle class="text-2xl text-center">
+          Sign Up
+        </CardTitle>
+        <CardDescription class="text-center">
+          Enter your email below to create an account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div class="grid gap-4">
+          <div class="grid gap-2">
+            <InputValidator id="email" type="email" label="Email" placeholder="m@gmai.com" name="email" />
+          </div>
+          <Button type="submit" :disabled="isLoading" class="ml-4">
+            <template v-if="isLoading">
+              <Icon name="IconLoading" />
+              Please wait
+            </template>
+            <template v-else>
+              Send Email
+            </template>
+          </Button>
+        </div>
+        <div class="mt-4 text-center text-sm">
+          <RouterLink to="/auth/login">
+            <Button variant="link">
+              Back to login
+            </Button>
+          </RouterLink>
+        </div>
+      </CardContent>
+    </Card>
   </form>
 </template>

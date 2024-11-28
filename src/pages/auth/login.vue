@@ -30,7 +30,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   }
   catch (error: Error | any) {
     const data = error?.response?.data
-    const errorMessage = data?.error || data?.message[0]?.message || data?.message || 'Some thing went wrong'
+    const errorMessage = data?.error || 'Some thing went wrong'
     toast({
       title: 'Error',
       description: errorMessage,
@@ -47,10 +47,12 @@ const callback: CallbackTypes.TokenResponseCallback = async (response) => {
     isLoading.value = true
     await authStore.loginWithGoogle(response.access_token)
   }
-  catch {
+  catch (error: Error | any) {
+    const data = error?.response?.data
+    const errorMessage = data?.error || 'Some thing went wrong'
     toast({
       title: 'Error',
-      description: 'Some thing went wrong',
+      description: errorMessage,
       variant: 'destructive',
       duration: 5000,
     })
@@ -98,7 +100,7 @@ const callback: CallbackTypes.TokenResponseCallback = async (response) => {
           Sign up
         </RouterLink>
       </div>
-      <Separator label="Or" style-label="bg-transparent" class="my-4" />
+      <Separator label="Or" style-label="bg-transparent" class="my-4" label-style="bg-card" />
       <GoogleLogin :callback="callback" class="w-full" popup-type="TOKEN">
         <Button type="button" class="w-full">
           <Icon name="IconGoogle" class="w-8 h-8" />

@@ -29,11 +29,11 @@ const onSubmit = form.handleSubmit(async (values) => {
       title: 'Success',
       description: 'Email sent successfully, check your inbox',
     })
-    router.push('/auth/reset-password')
+    router.push(`/auth/reset-password?email=${values.email}`)
   }
   catch (error: Error | any) {
     const data = error?.response?.data
-    const errorMessage = Array.isArray(data?.message) ? data.message[0]?.message : data?.message || data?.error || 'Some thing went wrong'
+    const errorMessage = data?.error || 'Some thing went wrong'
     toast({
       title: 'Error',
       description: errorMessage,

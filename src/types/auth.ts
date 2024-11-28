@@ -5,9 +5,7 @@ export interface LoginData {
 export interface RegisterData {
   email: string
   password: string
-  confirmPassword: string
-  lastName: string
-  firstName: string
+  otp: string
 }
 export interface EmailData {
   email: string

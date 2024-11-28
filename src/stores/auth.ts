@@ -1,5 +1,5 @@
-import type { EmailData, LoginData, RegisterData, ResetPasswordData } from '@/types'
-import { apiLogin, apiLoginWithGoogle, apiRegister, forgotPassword, requestResetPassword } from '@/api/auth'
+import type { EmailData, LoginData, RegisterData } from '@/types'
+import { apiLogin, apiLoginWithGoogle, apiLogout, apiRegister, apiSendOtpSignup, forgotPassword, requestResetPassword } from '@/api/auth'
 import { defineStore } from 'pinia'
 import { useUserStore } from './user'
 
@@ -11,11 +11,16 @@ export const useAuthStore = defineStore('auth', () => {
   const returnUrl = ref('')
 
   async function login(credentials: LoginData) {
-    const data = await apiLogin(credentials)
-    localStorage.setItem('access_token', data.access_token)
-    await userStore.getMe()
-    router.push(returnUrl.value || '/home')
-    returnUrl.value = ''
+    try {
+      const data = await apiLogin(credentials)
+      localStorage.setItem('access_token', data.access_token)
+      await userStore.getMe()
+      router.push(returnUrl.value || '/home')
+      returnUrl.value = ''
+    }
+    catch (error) {
+      return Promise.reject(error)
+    }
   }
 
   async function loginWithGoogle(access_token: string) {
@@ -26,11 +31,15 @@ export const useAuthStore = defineStore('auth', () => {
     returnUrl.value = ''
   }
 
-  function logout() {
+  async function logout() {
+    await apiLogout()
     localStorage.removeItem('access_token')
     userStore.removeUser()
     router.push('/auth/login')
     access_token.value = ''
+  }
+  function sendOTPSignup(data: EmailData) {
+    return apiSendOtpSignup(data)
   }
 
   function register(credentials: RegisterData) {
@@ -44,7 +53,8 @@ export const useAuthStore = defineStore('auth', () => {
   function sendEmailResetPassword(data: EmailData) {
     return forgotPassword(data)
   }
-  function resetPassword(data: ResetPasswordData) {
+
+  function resetPassword(data: RegisterData) {
     return requestResetPassword(data)
   }
   return {
@@ -58,5 +68,6 @@ export const useAuthStore = defineStore('auth', () => {
     setReturnUrl,
     resetPassword,
     sendEmailResetPassword,
+    sendOTPSignup,
   }
 })
