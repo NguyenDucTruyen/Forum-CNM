@@ -1,4 +1,5 @@
 import type { Category } from './category'
+import type { ResponseData } from './index'
 import type { UserData } from './user'
 
 export interface RequestCreateBlog {
@@ -30,7 +31,7 @@ export interface ResponseCreateBlog {
   message: string
   status: string
 }
-export interface ResponseBlogData {
+export interface ResponseBlogData extends ResponseData {
   data: BlogData[]
   message: string
   status: string

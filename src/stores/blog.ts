@@ -1,5 +1,5 @@
 import type { BlogData, RequestCreateBlog, ResponseBlogData } from '@/types'
-import { apiCreateBlog, apiDeleteBlog, apiGetBlogByCategory, apiGetBlogByUser, apiGetBlogs, apiUpdateBlog } from '@/api/blog'
+import { apiCreateBlog, apiDeleteBlog, apiGetBlogByCategory, apiGetBlogById, apiGetBlogByUser, apiGetBlogs, apiUpdateBlog } from '@/api/blog'
 import { apiDislikeBlog, apiLikeBlog } from '@/api/reaction'
 import { defineStore } from 'pinia'
 
@@ -23,6 +23,9 @@ export const useBlogStore = defineStore('blog', () => {
     return apiGetBlogByCategory(category, config)
   }
 
+  function getBlogById(id: string): Promise<BlogData> {
+    return apiGetBlogById(id)
+  } 
   // Reaction
   function likeBlog(blog_id: string) {
     return apiLikeBlog({ blog_id })
@@ -38,6 +41,7 @@ export const useBlogStore = defineStore('blog', () => {
     updateBlog,
     deleteBlog,
     getBlogByUser,
+    getBlogById,
     getBlogByCategory,
   }
 })

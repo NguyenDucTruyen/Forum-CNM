@@ -15,7 +15,7 @@ const blogs = ref<ResponseBlogData | null>()
 const query = ref({
   page: 1,
   limit: 5,
-  title: '',
+  search: '',
 })
 if (!route.query.page) {
   router.push({ query: { page: 1 } })
@@ -37,12 +37,12 @@ watch(route, async (newVal) => {
 }, { immediate: true })
 
 function handleUpdateQuery() {
-  if (!query.value.title)
+  if (!query.value.search)
     return
-  router.push({ query: { page: 1, title: query.value.title } })
+  router.push({ query: { page: 1, title: query.value.search } })
 }
 function handleDeleteQuery() {
-  if (!query.value.title) {
+  if (!query.value.search) {
     router.push({ query: { page: 1 } })
   }
 }
@@ -59,7 +59,7 @@ function handleDeleteQuery() {
     <div class="relative w-full flex justify-between items-center gap-4">
       <div class="relative w-full max-w-sm items-center">
         <input
-          v-model="query.title"
+          v-model="query.search"
           type="text"
           placeholder="Type tile to search"
           class="flex h-10 w-full border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10 rounded-full bg-background max-w-sm"
@@ -94,11 +94,11 @@ function handleDeleteQuery() {
           @click="$router.push(`/blogs/${blog.id}`)"
         />
       </div>
-      <!-- <PaginationTable
-        :total="blogs?.totalDocs"
-        :current-page="blogs?.page || 1"
+      <PaginationTable
+        :total="blogs?.total"
+        :current-page="blogs?.current_page || 1"
         :items-per-page="query.limit"
-      /> -->
+      />
     </template>
     <p v-else class="text-lg text-center text-muted-foreground">
       No blog found

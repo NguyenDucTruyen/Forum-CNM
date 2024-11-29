@@ -19,9 +19,7 @@ const categoryName = computed(() => {
   return category?.categoryName ?? 'Uncategorized'
 })
 
-// const like = computed(() => props.value.reaction?.filter((e: Reaction) => e.reaction === 'like').length)
-// const dislike = computed(() => props.value.reaction?.filter((e: Reaction) => e.reaction === 'dislike').length)
-// const formattedTime = computed(() => props.value.createdAt.split('T')[0])
+const formattedTime = computed(() => props.value.created_at.split('T')[0])
 </script>
 
 <template>
@@ -29,15 +27,12 @@ const categoryName = computed(() => {
     <img
       v-lazy="props.value.blogImage ?? null"
       alt=""
-      class="w-20 h-20 rounded-lg"
+      class="w-24 rounded-lg"
     >
     <div class="flex flex-col w-[calc(100%-100px)] justify-center h-24 gap-4">
       <div id="title" class="flex flex-col justify-between">
         <p class="font-medium truncate">
           {{ props.value.title }}
-        </p>
-        <p class="text-muted-foreground text-xs hidden sm:flex">
-          Author: {{ props.value.user_id }}
         </p>
       </div>
 
@@ -50,16 +45,13 @@ const categoryName = computed(() => {
             {{ categoryName }}
           </div>
         </div>
-        <div class="flex gap-5">
-          <!-- <p class="text-muted-foreground text-xs">
-            {{ like }} Likes
-          </p>
-          <p class="text-muted-foreground text-xs">
-            {{ dislike }} Dislikes
-          </p>
-          <p class="text-muted-foreground text-xs hidden sm:flex">
+        <div class="flex gap-2 items-center">
+          <span class="text-muted-foreground text-xs">
+            Published at:
+          </span>
+          <div class="text-muted-foreground rounded-lg px-2 py-1 text-xs font-medium">
             {{ formattedTime }}
-          </p> -->
+          </div>
         </div>
       </div>
     </div>
