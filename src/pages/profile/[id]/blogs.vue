@@ -120,7 +120,7 @@ watch(() => route.query, async (newVal) => {
       <PaginationTable
         :total="blogs?.total"
         :current-page="blogs?.current_page || 1"
-        :items-per-page="query.limit"
+        :items-per-page="query.per_page"
       />
     </template>
     <p v-else class="text-lg text-center text-muted-foreground">
