@@ -13,7 +13,7 @@ export const useCategoryStore = defineStore('category', () => {
   // For admin
   async function createCategory(data: RequestCreateCategory) {
     const response = await apiCreateCategory(data)
-    if(!categories.value) {
+    if (!categories.value) {
       categories.value = [response.data]
     }
   }
