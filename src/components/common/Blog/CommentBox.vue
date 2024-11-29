@@ -96,7 +96,7 @@ async function handleDeleteReplyComment(idReplyComment: string) {
       />
     </template>
     <div
-      v-if="isShowReply"
+      v-show="isShowReply"
       class="grid"
     >
       <template

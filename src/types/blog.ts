@@ -10,11 +10,6 @@ export interface RequestCreateBlog {
   statusBlog: string
 }
 
-export interface Reaction {
-  _id: string
-  userId: string
-  reaction: string
-}
 export interface BlogData {
   user_id: string
   category_id: string

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BlogData, CommentData, Reaction, Reply, ResponseDetailBlog, UserData } from '@/types'
+import type { BlogData, CommentData, Reaction, Reply, ResponseDetailBlog, ResponseReaction, UserData } from '@/types'
 
 import { toast } from '@/components/ui/toast'
 import { useBlogStore } from '@/stores/blog'
@@ -16,7 +16,7 @@ if (!route.params.id) {
   router.push('/home')
 }
 const blog = ref<ResponseDetailBlog | null>(null)
-
+const reactions = ref<ResponseReaction | null>(null)
 const comments = ref<CommentData[]>([])
 const isLoading = ref(false)
 
@@ -31,54 +31,68 @@ async function fetchData() {
   commentStore.getCommentByBlogId(route.params.id as string).then((res) => {
     comments.value = res
   })
+
+  blogStore.getReactionBlog(route.params.id as string).then((res) => {
+    reactions.value = res
+  })
 }
 fetchData()
 
-const countComment = computed(() => {
-  return comments.value.reduce((count, comment) => count + comment.replies.length + 1, 0)
-})
-// const countLike = computed(() => {
-//   return blog.value?.reaction.filter((reaction: Reaction) => reaction.reaction === 'like').length
-// })
-// const countDislike = computed(() => {
-//   return blog.value?.reaction.filter((reaction: Reaction) => reaction.reaction === 'dislike').length
-// })
-// const userReaction = computed(() => {
-//   const reaction = blog.value?.reaction.find((reaction: Reaction) => reaction.userId === userStore.user?._id)
-//   return reaction?.reaction || null
-// })
-
 async function postComment(content: string) {
   const newComment = await commentStore.createComment({ content, blog_id: blog.value?.data.id as string })
-  // const authorComment = await userStore.getUserData(response.user_id as string)
   comments.value.push(newComment)
 
   const container = document.querySelector('.container-default')
   if (container)
     container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' })
 }
+
 async function hanldeUpdateComment(data: CommentData) {
   const { data: updatedComment } = await commentStore.updateCommentById(data.id, { content: data.content })
   const index = comments.value.findIndex(comment => comment.id === updatedComment.id)
   comments.value[index] = updatedComment
 }
+
 async function deleteComment(id: string) {
   await commentStore.deleteCommentById(id)
   const index = comments.value.findIndex(comment => comment.id === id)
   comments.value.splice(index, 1)
 }
 
-// async function apiReactionsBlog(reaction: 'like' | 'dislike') {
-//   const response = await blogStore.reactionBlog(blog.value?._id as string, reaction)
-//   if (blog.value) {
-//     blog.value.reaction = response.reaction
-//   }
-// }
+async function apiReactionsBlog(reaction: 'like' | 'dislike') {
+  if (reaction === 'like')
+    await blogStore.likeBlog(blog.value?.data.id as string)
+  else
+    await blogStore.dislikeBlog(blog.value?.data.id as string)
+  blogStore.getReactionBlog(route.params.id as string).then((res) => {
+    reactions.value = res
+  })
+}
+
 const nameAuthorDisplay = computed(() => {
   if (author.value?.firstName || author.value?.lastName) {
     return `${author.value?.firstName ?? ''} ${author.value?.lastName ?? ''}`
   }
   return author.value?.email
+})
+
+const countComment = computed(() => {
+  return comments.value.reduce((count, comment) => count + comment.replies.length + 1, 0)
+})
+
+const countLike = computed(() => {
+  return reactions.value?.data.filter(item => item.reactionType === true).length
+})
+
+const countDislike = computed(() => {
+  return reactions.value?.data.filter(item => item.reactionType === false).length
+})
+
+const userReaction = computed(() => {
+  const reaction = reactions.value?.data.find(item => item.user_id === userStore.user?.id)
+  if (!reaction)
+    return null
+  return reaction?.reactionType
 })
 </script>
 
@@ -121,22 +135,22 @@ const nameAuthorDisplay = computed(() => {
     <Separator />
     <div class="mb-4">
       <div class="flex my-4 h-8 items-center">
-        <!-- <Button
-          :variant="userReaction === 'like' ? '' : 'outline'"
+        <Button
+          :variant="userReaction === true ? '' : 'outline'"
           class="mr-2"
           @click="apiReactionsBlog('like')"
         >
           <Icon name="IconThumbsUp" />
-          <span class="ml-2">Like ({{ countLike }})</span>
+          <span class="ml-2">Like {{ countLike ? `(${countLike})` : '' }}</span>
         </Button>
         <Button
-          :variant="userReaction === 'dislike' ? '' : 'outline'"
+          :variant="userReaction === false ? '' : 'outline'"
           class="mr-2"
           @click="apiReactionsBlog('dislike')"
         >
           <Icon name="IconThumbsDown" />
-          <span class="ml-2">Dislike ({{ countDislike }})</span>
-        </Button> -->
+          <span class="ml-2">Dislike {{ countDislike ? `(${countDislike})` : '' }}</span>
+        </Button>
         <div class="flex items-center gap-2 ml-2">
           <Icon name="IconComment" />
           <span>{{ countComment }} Comments</span>

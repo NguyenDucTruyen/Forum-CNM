@@ -1,24 +1,37 @@
 import type { BlogData, RequestCreateBlog, ResponseBlogData, ResponseDetailBlog } from '@/types'
-import { apiCreateBlog, apiDeleteBlog, apiGetBlogByCategory, apiGetBlogById, apiGetBlogByUser, apiGetBlogs, apiUpdateBlog } from '@/api/blog'
-import { apiDislikeBlog, apiLikeBlog } from '@/api/reaction'
+import {
+  apiCreateBlog,
+  apiDeleteBlog,
+  apiGetBlogByCategory,
+  apiGetBlogById,
+  apiGetBlogByUser,
+  apiGetBlogs,
+  apiUpdateBlog,
+} from '@/api/blog'
+import { apiDislikeBlog, apiGetReactionBlog, apiLikeBlog } from '@/api/reaction'
 import { defineStore } from 'pinia'
 
 export const useBlogStore = defineStore('blog', () => {
   function getBlogs(config: any): Promise<ResponseBlogData> {
     return apiGetBlogs(config)
   }
+
   function createBlog(data: RequestCreateBlog) {
     return apiCreateBlog(data)
   }
+
   function updateBlog(id: string, data: RequestCreateBlog) {
     return apiUpdateBlog(id, data)
   }
+
   function deleteBlog(id: string) {
     return apiDeleteBlog(id)
   }
+
   function getBlogByUser(user_id: string, config: any) {
     return apiGetBlogByUser(user_id, config)
   }
+
   function getBlogByCategory(category: string, config: any) {
     return apiGetBlogByCategory(category, config)
   }
@@ -28,10 +41,15 @@ export const useBlogStore = defineStore('blog', () => {
   }
   // Reaction
   function likeBlog(blog_id: string) {
-    return apiLikeBlog({ blog_id })
+    return apiLikeBlog(blog_id)
   }
+
   function dislikeBlog(blog_id: string) {
-    return apiDislikeBlog({ blog_id })
+    return apiDislikeBlog(blog_id)
+  }
+
+  function getReactionBlog(id: string) {
+    return apiGetReactionBlog(id)
   }
   return {
     getBlogs,
@@ -43,5 +61,6 @@ export const useBlogStore = defineStore('blog', () => {
     getBlogByUser,
     getBlogById,
     getBlogByCategory,
+    getReactionBlog,
   }
 })
