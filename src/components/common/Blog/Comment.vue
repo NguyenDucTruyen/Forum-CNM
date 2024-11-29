@@ -1,8 +1,10 @@
 <!-- eslint-disable prefer-promise-reject-errors -->
 <script setup lang="ts">
-import type { CommentData } from '@/types'
+import type { CommentData, Reply, UserData } from '@/types'
+
 import { uploadImage } from '@/api/upload'
 import { toast } from '@/components/ui/toast'
+import { useCommentStore } from '@/stores/comment'
 import { useConfirmStore } from '@/stores/confirm'
 import { useUserStore } from '@/stores/user'
 import { MoreHorizontal } from 'lucide-vue-next'
@@ -10,14 +12,14 @@ import BlotFormatter from 'quill-blot-formatter'
 import ImageUploader from 'quill-image-uploader'
 
 interface Emit {
-  (event: 'updateComment', data: CommentData): void
+  (event: 'updateComment', data: CommentData | Reply): void
   (event: 'comment', title: string): void
   (event: 'changeStatusReply', status: boolean): void
   (event: 'delete', id: string): void
 }
 
 interface Props {
-  item: CommentData | null
+  item?: CommentData | Reply
 }
 
 const props = defineProps<Props>()
@@ -27,12 +29,25 @@ const userStore = useUserStore()
 const confirmStore = useConfirmStore()
 const edit = defineModel('edit')
 
-const itemComment = ref(props.item)
+const isLoading = ref(false)
+const itemComment = ref<CommentData | Reply | undefined>(props.item)
 const title = ref('')
 const quill = ref(null)
 const focus = ref(false)
 const enableSave = ref(false)
 const isReply = ref(false)
+const authorComment = ref<UserData | null>(null)
+
+async function fetchData() {
+  if (itemComment.value) {
+    isLoading.value = true
+    authorComment.value = await userStore.getUserData(itemComment.value?.user_id as string)
+    isLoading.value = false
+  }
+}
+
+fetchData()
+
 const toolbar = [
   [{ header: [false, 1, 2, 3, 4, 5, 6] }],
   ['bold', 'italic', 'strike'],
@@ -63,6 +78,7 @@ const modules = [{
   },
   },
 }]
+
 function switchToEditMode() {
   if (itemComment.value?.content) {
     title.value = itemComment.value.content
@@ -129,19 +145,19 @@ async function confirmDeleteComment(id: string) {
   <div class="comment-editor" :class="{ 'pl-10': itemComment }">
     <img
       v-if="itemComment"
-      v-lazy="itemComment.userId.profileImage ?? 'https://static.vecteezy.com/system/resources/thumbnails/024/983/914/small_2x/simple-user-default-icon-free-png.png'"
+      v-lazy="authorComment?.profileImage ?? 'https://static.vecteezy.com/system/resources/thumbnails/024/983/914/small_2x/simple-user-default-icon-free-png.png'"
       alt=""
       class="comment-creator"
     >
     <div v-if="!edit && itemComment" class="preview-comment relative">
       <template v-if="itemComment">
         <div class="comment-author">
-          <span class="comment-author-name max-w-60 truncate">{{ itemComment.userId.email }}</span>
-          <span class="comment-author-time">{{ getDate(itemComment.createdAt) }}</span>
+          <span class="comment-author-name max-w-60 truncate">{{ authorComment?.email }}</span>
+          <span class="comment-author-time">{{ getDate(itemComment.created_at) }}</span>
         </div>
         <div class="preview-comment-body ql-snow w-[calc(100%-3rem)]">
           <div class="content ql-editor" v-html="itemComment.content" />
-          <div v-if="itemComment.reply" class="preview-comment-body-action">
+          <div v-if="itemComment?.replies" class="preview-comment-body-action">
             <Button variant="link" type="info" class="file-action relative" @click="emitReply">
               {{ isReply ? 'Cancel reply' : 'Write a reply' }}
             </Button>
@@ -149,9 +165,8 @@ async function confirmDeleteComment(id: string) {
         </div>
         <DropdownMenu
           v-if="
-            itemComment.reply
-              && (itemComment.userId._id === userStore.user?._id
-                || userStore.user?.roleName === 'ADMIN')"
+            (authorComment?.id === userStore.user?.id
+              || userStore.user?.roleName === 'ADMIN')"
         >
           <DropdownMenuTrigger
             class="cursor-pointer"
@@ -170,7 +185,7 @@ async function confirmDeleteComment(id: string) {
             >
               Edit comment
             </DropdownMenuItem>
-            <DropdownMenuItem class="cursor-pointer" @click="confirmDeleteComment(itemComment._id)">
+            <DropdownMenuItem class="cursor-pointer" @click="confirmDeleteComment(itemComment.id)">
               Delete comment
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -24,7 +24,7 @@ export interface BlogData {
   statusBlog: string
   updated_at: string
   created_at: string
-  id: number
+  id: string
 }
 export interface ResponseCreateBlog {
   data: BlogData
@@ -35,6 +35,11 @@ export interface ResponseBlogData extends ResponseData {
   data: BlogData[]
   message: string
   status: string
+}
+
+export interface ResponseDetailBlog {
+  category: string
+  data: BlogData
 }
 
 export const isActiveEnum = {

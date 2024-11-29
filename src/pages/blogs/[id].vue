@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BlogData, CommentData, CommentReply, Reaction, RequestBodyComment } from '@/types'
+import type { BlogData, CommentData, Reaction, Reply, ResponseDetailBlog, UserData } from '@/types'
 
 import { toast } from '@/components/ui/toast'
 import { useBlogStore } from '@/stores/blog'
@@ -11,84 +11,101 @@ const router = useRouter()
 const userStore = useUserStore()
 const blogStore = useBlogStore()
 const commentStore = useCommentStore()
-
+const author = ref<UserData | null>(null)
 if (!route.params.id) {
   router.push('/home')
 }
-const blog = ref<BlogData | null>(null)
+const blog = ref<ResponseDetailBlog | null>(null)
+
 const comments = ref<CommentData[]>([])
-comments.value = await commentStore.getCommentByBlogId(route.params.id as string) as CommentData[]
-blog.value = await blogStore.getBlogById(route.params.id as string)
+const isLoading = ref(false)
+
+async function fetchData() {
+  isLoading.value = true
+  blog.value = await blogStore.getBlogById(route.params.id as string)
+  isLoading.value = false
+
+  userStore.getUserData(blog.value.data.user_id).then((res) => {
+    author.value = res
+  })
+  commentStore.getCommentByBlogId(route.params.id as string).then((res) => {
+    comments.value = res
+  })
+}
+fetchData()
 
 const countComment = computed(() => {
-  return comments.value.reduce((count, comment) => count + comment.reply.length + 1, 0)
+  return comments.value.reduce((count, comment) => count + comment.replies.length + 1, 0)
 })
-const countLike = computed(() => {
-  return blog.value?.reaction.filter((reaction: Reaction) => reaction.reaction === 'like').length
-})
-const countDislike = computed(() => {
-  return blog.value?.reaction.filter((reaction: Reaction) => reaction.reaction === 'dislike').length
-})
-const userReaction = computed(() => {
-  const reaction = blog.value?.reaction.find((reaction: Reaction) => reaction.userId === userStore.user?._id)
-  return reaction?.reaction || null
-})
+// const countLike = computed(() => {
+//   return blog.value?.reaction.filter((reaction: Reaction) => reaction.reaction === 'like').length
+// })
+// const countDislike = computed(() => {
+//   return blog.value?.reaction.filter((reaction: Reaction) => reaction.reaction === 'dislike').length
+// })
+// const userReaction = computed(() => {
+//   const reaction = blog.value?.reaction.find((reaction: Reaction) => reaction.userId === userStore.user?._id)
+//   return reaction?.reaction || null
+// })
 
 async function postComment(content: string) {
-  const response = await commentStore.createComment(blog.value?._id as string, { content })
-  const newComment = {
-    ...response,
-    userId: {
-      _id: userStore.user?._id as string,
-      email: userStore.user?.email as string,
-    },
-  } as CommentData
+  const newComment = await commentStore.createComment({ content, blog_id: blog.value?.data.id as string })
+  // const authorComment = await userStore.getUserData(response.user_id as string)
   comments.value.push(newComment)
+
   const container = document.querySelector('.container-default')
   if (container)
     container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' })
 }
 async function hanldeUpdateComment(data: CommentData) {
-  await commentStore.updateCommentById(data._id, { content: data.content })
-  toast({
-    title: 'Success',
-    description: 'Comment updated successfully.',
-  })
+  const { data: updatedComment } = await commentStore.updateCommentById(data.id, { content: data.content })
+  const index = comments.value.findIndex(comment => comment.id === updatedComment.id)
+  comments.value[index] = updatedComment
 }
 async function deleteComment(id: string) {
   await commentStore.deleteCommentById(id)
-  const index = comments.value.findIndex(comment => comment._id === id)
+  const index = comments.value.findIndex(comment => comment.id === id)
   comments.value.splice(index, 1)
 }
-async function apiReactionsBlog(reaction: 'like' | 'dislike') {
-  const response = await blogStore.reactionBlog(blog.value?._id as string, reaction)
-  if (blog.value) {
-    blog.value.reaction = response.reaction
+
+// async function apiReactionsBlog(reaction: 'like' | 'dislike') {
+//   const response = await blogStore.reactionBlog(blog.value?._id as string, reaction)
+//   if (blog.value) {
+//     blog.value.reaction = response.reaction
+//   }
+// }
+const nameAuthorDisplay = computed(() => {
+  if (author.value?.firstName || author.value?.lastName) {
+    return `${author.value?.firstName ?? ''} ${author.value?.lastName ?? ''}`
   }
-}
+  return author.value?.email
+})
 </script>
 
 <template>
-  <section v-if="blog" class="mt-8 px-6 ">
+  <div v-if="isLoading" class="flex w-full p-8 justify-center items-center">
+    <Icon name="IconLoading" />
+  </div>
+  <section v-else-if="blog" class="mt-8 px-6 ">
     <div class="header relative">
       <p class="text-3xl font-semibold lg:max-w-[46rem] pb-2">
-        {{ blog.title }}
+        {{ blog.data.title }}
       </p>
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-4">
         <div class="meta-item">
           <label>Author:</label>
-          <RouterLink :to="{ name: 'profile-id', params: { id: blog.userId._id } }">
-            {{ blog.userId.email }}
+          <RouterLink :to="{ name: 'profile-id', params: { id: blog.data.user_id } }">
+            {{ nameAuthorDisplay }}
           </RouterLink>
         </div>
         <div class="meta-item">
           <label>Category:</label>
-          <RouterLink to="/home">
-            {{ blog.category?.name ?? 'Uncategorized' }}
+          <RouterLink :to="`/blogs/category/${blog.data.category_id}`">
+            {{ blog.category }}
           </RouterLink>
         </div>
         <div class="meta-item">
-          <label>Published: {{ blog.createdAt.split('T')[0] }}</label>
+          <label>Published: {{ blog.data.created_at.split('T')[0] }}</label>
         </div>
       </div>
       <RouterLink to="/blogs/create" class="lg:absolute top-0 right-0">
@@ -99,12 +116,12 @@ async function apiReactionsBlog(reaction: 'like' | 'dislike') {
       <Separator />
     </div>
     <div class="ql-snow content">
-      <div class="ql-editor" v-html="blog?.content" />
+      <div class="ql-editor" v-html="blog?.data.content" />
     </div>
     <Separator />
     <div class="mb-4">
       <div class="flex my-4 h-8 items-center">
-        <Button
+        <!-- <Button
           :variant="userReaction === 'like' ? '' : 'outline'"
           class="mr-2"
           @click="apiReactionsBlog('like')"
@@ -119,8 +136,7 @@ async function apiReactionsBlog(reaction: 'like' | 'dislike') {
         >
           <Icon name="IconThumbsDown" />
           <span class="ml-2">Dislike ({{ countDislike }})</span>
-        </Button>
-        <!-- <Separator orientation="vertical" /> -->
+        </Button> -->
         <div class="flex items-center gap-2 ml-2">
           <Icon name="IconComment" />
           <span>{{ countComment }} Comments</span>
@@ -133,10 +149,10 @@ async function apiReactionsBlog(reaction: 'like' | 'dislike') {
     <Comment
       @comment="postComment"
     />
-    <!-- <Separator label="Comment Area" label-style="text-xl" class="my-4 h-1" /> -->
+    <div class="mt-10" />
     <template
       v-for="item in comments"
-      :key="item._id"
+      :key="item.id"
     >
       <Separator label="Comment" label-style=" text-lg" class="my-4 h-[2px]" />
       <CommentBox

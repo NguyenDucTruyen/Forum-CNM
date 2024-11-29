@@ -1,4 +1,4 @@
-import type { CommentData, RequestBodyComment, RequestCreateReply, RequestUpdateReply } from '@/types'
+import type { CommentData, RequestBodyComment, RequestCreateReply, RequestUpdateComment, RequestUpdateReply } from '@/types'
 
 import { apiCreateComment, apiDeleteComment, apiGetComments, apiUpdateComment } from '@/api/comment'
 import { apiDeleteReply, apitCreateReply, apiUpdateReply } from '@/api/reply'
@@ -7,14 +7,16 @@ import { defineStore } from 'pinia'
 export const useCommentStore = defineStore('comment', () => {
   // Comment
   async function getCommentByBlogId(id: string) {
-    return apiGetComments(id)
+    const { data } = await apiGetComments(id)
+    return data
   }
 
-  async function createComment(data: RequestBodyComment) {
-    return apiCreateComment(data)
+  async function createComment(body: RequestBodyComment) {
+    const { data } = await apiCreateComment(body)
+    return data
   }
 
-  async function updateCommentById(id: string, data: RequestBodyComment) {
+  async function updateCommentById(id: string, data: RequestUpdateComment) {
     return apiUpdateComment(id, data)
   }
   async function deleteCommentById(id: string) {
@@ -22,8 +24,9 @@ export const useCommentStore = defineStore('comment', () => {
   }
 
   // Reply
-  async function createReplyComment(data: RequestCreateReply) {
-    return apitCreateReply(data)
+  async function createReplyComment(body: RequestCreateReply) {
+    const { data } = await apitCreateReply(body)
+    return data
   }
 
   async function updateReplyComment(id: string, data: RequestUpdateReply) {

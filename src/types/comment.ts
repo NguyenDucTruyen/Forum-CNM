@@ -1,12 +1,12 @@
 import type { Reply } from '@/types/reply'
 
 export interface CommentData {
-  user_id: number
+  user_id: string
   blog_id: string
   content: string
   updated_at: string
   created_at: string
-  id: number
+  id: string
   replies: Reply[]
 }
 

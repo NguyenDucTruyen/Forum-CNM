@@ -30,7 +30,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   }
   catch (error: Error | any) {
     const data = error?.response?.data
-    const errorMessage = data?.error || 'Some thing went wrong'
+    const errorMessage = data?.error || data?.message || 'Some thing went wrong'
     toast({
       title: 'Error',
       description: errorMessage,
@@ -84,7 +84,7 @@ const callback: CallbackTypes.TokenResponseCallback = async (response) => {
             </RouterLink>
           </div>
         </div>
-        <Button type="submit" :disabled="isLoading" class="ml-4">
+        <Button type="submit" :disabled="isLoading">
           <template v-if="isLoading">
             <Icon name="IconLoading" />
             Please wait

@@ -1,4 +1,4 @@
-import type { RequestCreateReply, RequestUpdateReply, ResponseCommentData, ResponseCreateReply } from '@/types'
+import type { RequestCreateReply, RequestUpdateReply, ResponseCommentData, ResponseCreateReply, ResponseUpdateReply } from '@/types'
 
 import { $delete, $post, $put } from './axios'
 
@@ -6,7 +6,7 @@ export async function apitCreateReply(data: RequestCreateReply): Promise<Respons
   return $post('/createReply', data)
 }
 
-export function apiUpdateReply(idReply: string, data: RequestUpdateReply) {
+export function apiUpdateReply(idReply: string, data: RequestUpdateReply): Promise<ResponseUpdateReply> {
   return $put(`/updateReply/${idReply}`, data)
 }
 

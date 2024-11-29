@@ -1,11 +1,11 @@
-import type { BlogData, RequestCreateBlog, ResponseBlogData, ResponseCreateBlog } from '@/types'
+import type { BlogData, RequestCreateBlog, ResponseBlogData, ResponseCreateBlog, ResponseDetailBlog } from '@/types'
 import { $delete, $get, $patch, $post, $put } from './axios'
 
 export async function apiGetBlogs(config: any): Promise<ResponseBlogData> {
   return $get('/getListBlog', config)
 }
 
-export async function apiGetBlogById(id: string): Promise<BlogData> {
+export async function apiGetBlogById(id: string): Promise<ResponseDetailBlog> {
   return $get(`/getDetailBlog/${id}`)
 }
 

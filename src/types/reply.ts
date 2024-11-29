@@ -1,10 +1,10 @@
 export interface Reply {
-  user_id: number
+  user_id: string
   comment_id: string
   content: string
   updated_at: string
   created_at: string
-  id: number
+  id: string
 }
 
 export interface RequestCreateReply {
@@ -20,4 +20,9 @@ export interface ResponseCreateReply {
 
 export interface RequestUpdateReply {
   content: string
+}
+
+export interface ResponseUpdateReply {
+  message: string
+  data: Reply
 }
