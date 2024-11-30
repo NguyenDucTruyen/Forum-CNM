@@ -31,11 +31,8 @@ export interface ResponseGetUser {
   message: string
   data: UserData
 }
+
 export interface ResponseListUser {
-  docs: UserData[]
-  totalDocs: number
-  limit: number
-  totalPages: number
-  page: number
-  pagingCounter: number
+  data: UserData[]
+  message: string
 }

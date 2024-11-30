@@ -10,8 +10,7 @@
 <script setup lang="ts">
 import { useAdminStore } from '@/stores/admin'
 import { useConfirmStore } from '@/stores/confirm'
-import { type ResponseBlogData, type ResponseListUser, statusEnum, type UserData } from '@/types'
-import { MoreHorizontal } from 'lucide-vue-next'
+import { type ResponseBlogData, statusEnum } from '@/types'
 import { ref } from 'vue'
 
 const adminStore = useAdminStore()

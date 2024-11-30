@@ -8,9 +8,9 @@
   </route>
 
 <script setup lang="ts">
+import type { ResponseBlogData, statusEnum, UserData } from '@/types'
 import { useAdminStore } from '@/stores/admin'
 import { useConfirmStore } from '@/stores/confirm'
-import { type ResponseBlogData, type ResponseListUser, statusEnum, type UserData } from '@/types'
 import { MoreHorizontal } from 'lucide-vue-next'
 import { ref } from 'vue'
 
