@@ -20,9 +20,6 @@ async function checkout() {
 </script>
 
 <template>
-  <!-- <Button @click="checkout">
-    checkout
-  </Button> -->
   <div class="flex flex-col  max-w-4xl m-auto border p-8 rounded-lg">
     <div class="flex flex-col">
       <h1 class="text-2xl font-semibold text-center">
@@ -56,6 +53,7 @@ async function checkout() {
         <Button
           class="my-2"
           :disabled="userStore.user?.upgrade_at"
+          @click="checkout"
         >
           {{ userStore.user?.upgrade_at ? 'Current' : 'Upgrade' }}
         </Button>
