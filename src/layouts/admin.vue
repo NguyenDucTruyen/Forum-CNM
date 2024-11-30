@@ -16,7 +16,7 @@
             <div class="flex col-span-1 lg:col-span-3">
               <div class="flex flex-col gap-4 h-full rounded-xl flex-1">
                 <Suspense>
-                  <router-view />
+                  <router-view :key="$route.fullPath"/>
                   <template #fallback>
                     <div class="flex w-full p-8 justify-center items-center">
                       <Icon name="IconLoading" />

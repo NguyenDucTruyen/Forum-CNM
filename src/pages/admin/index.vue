@@ -17,7 +17,7 @@ const route = useRoute()
 const router = useRouter()
 
 const allUsers = ref<UserData[] | null>()
-
+const isLoading = ref(false)
 const query = ref({
   page: 1,
   limit: 5,
@@ -27,13 +27,12 @@ if (!route.query.page) {
   router.push({ query: { page: 1 } })
   query.value.page = 1
 }
-
-allUsers.value = await adminStore.getAllUsers()
-
+onMounted(async () => {
+  isLoading.value = true
+  allUsers.value = await adminStore.getAllUsers()
+  isLoading.value = false
+})
 const paginateUsers = computed(() => {
-  const container = document.querySelector('.container-default')
-  if (container)
-    container.scrollTo({ top: 0, behavior: 'smooth' })
   if (route.query.page) {
     const page = Number(route.query.page)
     return allUsers.value?.slice((page - 1) * 5, page * 5)
@@ -55,7 +54,10 @@ async function handleChange(user: UserData, value: boolean) {
 </script>
 
 <template>
-  <div class="container mx-auto p-4">
+  <div v-if="isLoading" class="flex w-full p-8 justify-center items-center">
+    <Icon name="IconLoading" />
+  </div>
+  <div v-else class="container mx-auto p-4">
     <h2 class="text-2xl font-semibold mb-4 ">
       <!-- User Management -->
     </h2>

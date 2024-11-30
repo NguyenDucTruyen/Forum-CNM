@@ -10,14 +10,20 @@ const items = ref([
   },
   {
     id: 1,
-    title: 'Publish Blog',
-    icon: 'IconAdmin',
-    url: '/admin/publishblog',
+    title: 'Category Management',
+    icon: 'IconCategory',
+    url: '/admin/category',
   },
   {
     id: 2,
+    title: 'Publish Blog',
+    icon: 'IconCategory',
+    url: '/admin/publishblog',
+  },
+  {
+    id: 3,
     title: 'Pending Blog',
-    icon: 'IconAdmin',
+    icon: 'IconDocument',
     url: '/admin/pendingblog',
 
   },
