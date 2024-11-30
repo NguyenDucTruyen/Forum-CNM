@@ -49,7 +49,7 @@ const callback: CallbackTypes.TokenResponseCallback = async (response) => {
   }
   catch (error: Error | any) {
     const data = error?.response?.data
-    const errorMessage = data?.error || 'Some thing went wrong'
+    const errorMessage = data?.error || data?.message || 'Some thing went wrong'
     toast({
       title: 'Error',
       description: errorMessage,

@@ -27,7 +27,7 @@ const formattedTime = computed(() => props.value.created_at.split('T')[0])
     <img
       v-lazy="props.value.blogImage ?? null"
       alt=""
-      class="w-24 rounded-lg"
+      class="w-24 h-24 object-cover rounded-lg"
     >
     <div class="flex flex-col w-[calc(100%-100px)] justify-center h-24 gap-4">
       <div id="title" class="flex flex-col justify-between">

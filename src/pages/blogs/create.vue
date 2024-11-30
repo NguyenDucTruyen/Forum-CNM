@@ -66,24 +66,40 @@ const { handleSubmit, setFieldValue, resetForm } = useForm({
 })
 
 const onSubmit = handleSubmit(async (values) => {
-  if (!file.value) {
-    return
+  try {
+    if (!file.value) {
+      return
+    }
+    isLoading.value = true
+    const response = await uploadImage(file.value as File)
+    const body = {
+      title: values.title,
+      category_id: values.category,
+      content: content.value,
+      blogImage: response.url,
+    }
+    await blogStore.createBlog(body as RequestCreateBlog)
+    toast({
+      title: 'Success',
+      description: 'Blog created successfully.',
+    })
+    resetData()
   }
-  isLoading.value = true
-  const response = await uploadImage(file.value as File)
-  const body = {
-    title: values.title,
-    category_id: values.category,
-    content: content.value,
-    blogImage: response.url,
+  catch (error: Error | any) {
+    const data = error?.response?.data
+    const errorMessage = data?.error || data?.message || 'Some thing went wrong'
+    if (errorMessage) {
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        variant: 'destructive',
+        duration: 5000,
+      })
+    }
   }
-  await blogStore.createBlog(body as RequestCreateBlog)
-  toast({
-    title: 'Success',
-    description: 'Blog created successfully.',
-  })
-  resetData()
-  isLoading.value = false
+  finally {
+    isLoading.value = false
+  }
 })
 
 function resetData() {

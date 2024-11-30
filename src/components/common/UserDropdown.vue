@@ -52,6 +52,13 @@ const nameDisplay = computed(() => {
         </DropdownMenuItem>
       </RouterLink>
       <DropdownMenuSeparator />
+      <RouterLink :to="`/profile/${userStore.user.id}/plans`">
+        <DropdownMenuItem class="cursor-pointer relative">
+          Billings & Plans
+          <Icon v-if="userStore.user.upgrade_at" name="IconCrown" class="text-primary absolute top-0 left-[6.5rem] rotate-12" />
+        </DropdownMenuItem>
+      </RouterLink>
+      <DropdownMenuSeparator />
       <DropdownMenuItem class="cursor-pointer" @click="authStore.logout()">
         Log out
       </DropdownMenuItem>

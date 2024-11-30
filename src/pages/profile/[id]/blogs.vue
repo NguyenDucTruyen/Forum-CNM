@@ -22,7 +22,7 @@ const isLoading = ref(true)
 const blogs = ref<ResponseBlogData | null>()
 const query = ref({
   page: 1,
-  per_page: 1000,
+  per_page: 5,
   search: '',
 })
 if (!route.query.page) {
@@ -55,7 +55,7 @@ onMounted(async () => {
 function handleUpdateQuery() {
   if (!query.value.search)
     return
-  router.push({ query: { page: 1, title: query.value.search } })
+  router.push({ query: query.value })
 }
 function handleDeleteQuery() {
   if (!query.value.search) {

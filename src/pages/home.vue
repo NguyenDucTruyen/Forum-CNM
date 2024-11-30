@@ -14,7 +14,7 @@ const isLoading = ref(true)
 const blogs = ref<ResponseBlogData | null>()
 const query = ref({
   page: 1,
-  limit: 5,
+  per_page: 5,
   search: '',
 })
 if (!route.query.page) {
@@ -97,7 +97,7 @@ function handleDeleteQuery() {
       <PaginationTable
         :total="blogs?.total"
         :current-page="blogs?.current_page || 1"
-        :items-per-page="query.limit"
+        :items-per-page="query.per_page"
       />
     </template>
     <p v-else class="text-lg text-center text-muted-foreground">

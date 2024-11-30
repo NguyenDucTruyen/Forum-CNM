@@ -27,7 +27,7 @@ async function checkout() {
       </h1>
       <span class="text-sm max-w-2xl text-center mt-2 mb-8">Choose the best plan to fit your needs. All plans include its own feature or advance tools and features to boost your expirement</span>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <div class="flex justify-center p-4 rounded-lg border-input border flex-col max-w-72 bg-background mx-auto w-full">
         <h2 class="text-xl font-medium text-center">
           Basic
@@ -40,7 +40,7 @@ async function checkout() {
             Package Includes
           </div>
           <span class="my-1"><Icon name="IconCheck" class="text-primary w-10" />Basic action</span>
-          <span class="my-1"><Icon name="IconCheck" class="text-primary w-10" />Limit 5 post</span>
+          <span class="my-1"><Icon name="IconCheck" class="text-primary w-10" />Limit of 5 posts</span>
           <span class="my-1"><Icon name="IconCheck" class="text-primary w-10" />Lower Priority</span>
         </div>
       </div>
@@ -62,7 +62,7 @@ async function checkout() {
             Package Includes
           </div>
           <span class="my-1"><Icon name="IconCheck" class="text-primary w-10" />All features</span>
-          <span class="my-1"><Icon name="IconCheck" class="text-primary w-10" />Unlimited post</span>
+          <span class="my-1"><Icon name="IconCheck" class="text-primary w-10" />Unlimited posts</span>
           <span class="my-1"><Icon name="IconCheck" class="text-primary w-10" />Higher Priority</span>
         </div>
       </div>

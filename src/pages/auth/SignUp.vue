@@ -34,8 +34,8 @@ const onSubmit = form.handleSubmit(async (values) => {
     router.push(`/auth/register-account?email=${values.email}`)
   }
   catch (error: Error | any) {
-    const data = error?.response?.data
-    const errorMessage = data?.error || 'Some thing went wrong'
+     const data = error?.response?.data
+    const errorMessage = data?.error || data?.message || 'Some thing went wrong'
     toast({
       title: 'Error',
       description: errorMessage,
