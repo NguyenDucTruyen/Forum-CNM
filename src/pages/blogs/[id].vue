@@ -102,33 +102,40 @@ const userReaction = computed(() => {
     <Icon name="IconLoading" />
   </div>
   <section v-else-if="blog" class="mt-8 px-6 ">
-    <div class="header relative">
-      <p class="text-3xl font-semibold lg:max-w-[46rem] pb-2">
-        {{ blog.data.title }}
-      </p>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-4">
-        <div class="meta-item">
-          <label>Author:</label>
-          <RouterLink :to="{ name: 'profile-id', params: { id: blog.data.user_id } }">
-            {{ nameAuthorDisplay }}
-          </RouterLink>
+    <div class="grid lg:grid-cols-5 grid-cols-1">
+      <img
+        v-lazy="blog.data.blogImage ?? null"
+        alt=""
+        class="w-24 h-24 object-cover rounded-lg"
+      >
+      <div class="header relative lg:col-span-4">
+        <p class="text-3xl font-semibold lg:max-w-[46rem] pb-2">
+          {{ blog.data.title }}
+        </p>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-4">
+          <div class="meta-item">
+            <label>Author:</label>
+            <RouterLink :to="{ name: 'profile-id', params: { id: blog.data.user_id } }">
+              {{ nameAuthorDisplay }}
+            </RouterLink>
+          </div>
+          <div class="meta-item">
+            <label>Category:</label>
+            <RouterLink :to="`/blogs/category/${blog.data.category_id}`">
+              {{ blog.category }}
+            </RouterLink>
+          </div>
+          <div class="meta-item">
+            <label>Published: {{ blog.data.created_at.split('T')[0] }}</label>
+          </div>
         </div>
-        <div class="meta-item">
-          <label>Category:</label>
-          <RouterLink :to="`/blogs/category/${blog.data.category_id}`">
-            {{ blog.category }}
-          </RouterLink>
-        </div>
-        <div class="meta-item">
-          <label>Published: {{ blog.data.created_at.split('T')[0] }}</label>
-        </div>
+        <RouterLink to="/blogs/create" class="lg:absolute top-0 right-0">
+          <Button class="mb-4 lg:mb-0 ">
+            Create Blog
+          </Button>
+        </RouterLink>
+        <Separator />
       </div>
-      <RouterLink to="/blogs/create" class="lg:absolute top-0 right-0">
-        <Button class="mb-4 lg:mb-0 ">
-          Create Blog
-        </Button>
-      </RouterLink>
-      <Separator />
     </div>
     <div class="ql-snow content">
       <div class="ql-editor" v-html="blog?.data.content" />

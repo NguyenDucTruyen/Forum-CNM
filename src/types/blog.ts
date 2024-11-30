@@ -20,6 +20,7 @@ export interface BlogData {
   updated_at: string
   created_at: string
   id: string
+  category: Category
 }
 export interface ResponseCreateBlog {
   data: BlogData

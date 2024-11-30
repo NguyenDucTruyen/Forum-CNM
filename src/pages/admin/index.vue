@@ -73,7 +73,7 @@ async function handleChange(user: UserData, value: boolean) {
           Email
         </div>
         <div>Gender</div>
-        <div>Birthday</div>
+        <div>Plan</div>
         <div>Status</div>
       </div>
       <div
@@ -117,7 +117,7 @@ async function handleChange(user: UserData, value: boolean) {
           </TooltipProvider>
         </div>
         <div>{{ user.gender }}</div>
-        <div>{{ getDate(user.dayOfBirth ?? '') }}</div>
+        <div>{{ user.upgrade_at ? 'Premium' : 'Basic' }}</div>
         <div class="flex justify-between items-center gap-2">
           <Switch :checked="user.isActive" @update:checked="(value:any) => handleChange(user, value)" />
         </div>

@@ -116,23 +116,25 @@ function handleDeleteQuery() {
         <Icon name="IconLoading" />
       </div>
       <div v-else-if="data?.data.length" class="rounded-lg overflow-hidden shadow-md w-full">
-        <div class="grid lg:grid-cols-6 grid-cols-5 gap-4 p-4 border-b font-semibold">
+        <div class="grid lg:grid-cols-7 grid-cols-6 gap-4 p-4 border-b font-semibold">
           <div>
             Thumbnail
           </div>
           <div class="lg:col-span-2">
             Title
           </div>
+          <div class="lg:col-span-2">
+            Category
+          </div>
           <div>
             Created Time
           </div>
-          <div>Category</div>
           <div>Action</div>
         </div>
         <div
           v-for="blog in data?.data"
           :key="blog.id"
-          class="grid lg:grid-cols-6 grid-cols-5 gap-4 p-4 items-center hover:bg-secondary"
+          class="grid lg:grid-cols-7 grid-cols-6 gap-4 p-4 items-center hover:bg-secondary rounded-lg"
         >
           <!-- Avatar and Name -->
           <div class="flex items-center gap-4">
@@ -157,41 +159,54 @@ function handleDeleteQuery() {
               </Tooltip>
             </TooltipProvider>
           </div>
-          <div>{{ getDate(blog.created_at) }}</div>
-          <div>{{ blog.category_id }}</div>
-          <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                class="cursor-pointer w-12"
-                as-child
-              >
-                <Button variant="outline" class="w-12 p-0">
-                  Menu
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent class="">
-                <DropdownMenuLabel class="text-center">
-                  Actions
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem class="cursor-pointer">
-                  <Button
-                    @click="revertBlog(blog.id)"
-                  >
-                    Revert Blog
+          <div class="lg:col-span-2 truncate">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <RouterLink :to="`/blogs/category/${blog.category_id}`">
+                    {{ blog.category.categoryName }}
+                  </RouterLink>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>View category </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            </div>
+            <div>{{ getDate(blog.created_at) }}</div>
+            <div>
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  class="cursor-pointer w-12"
+                  as-child
+                >
+                  <Button variant="outline" class="w-12 p-0">
+                    Menu
                   </Button>
-                </DropdownMenuItem>
-                <DropdownMenuItem class="cursor-pointer">
-                  <Button
-                    variant="destructive"
-                    @click="confirmDeleteBlog(blog.id)"
-                  >
-                    Delete Blog
-                  </Button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent class="">
+                  <DropdownMenuLabel class="text-center">
+                    Actions
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem class="cursor-pointer">
+                    <Button
+                      @click="revertBlog(blog.id)"
+                    >
+                      Revert Blog
+                    </Button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem class="cursor-pointer">
+                    <Button
+                      variant="destructive"
+                      @click="confirmDeleteBlog(blog.id)"
+                    >
+                      Delete Blog
+                    </Button>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
         </div>
         <PaginationTable
           :total="data.total"
