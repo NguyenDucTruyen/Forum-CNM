@@ -142,12 +142,12 @@ async function confirmDeletePhoto() {
       <div class="col-span-1 flex flex-col relative items-center">
         <Avatar class="h-28 w-28 sm:h-40 sm:w-40 rounded-lg cursor-pointer relative mt-8" @click="() => fileInput?.click()">
           <template v-if="previewImage">
-            <div class="flex justify-center items-center rounded-sm absolute right-1 top-1 hover:bg-muted-foreground bg-secondary p-1 cursor-pointer" @click.stop="confirmDeletePhoto">
+            <div v-if="isAuthor" class="flex justify-center items-center rounded-sm absolute right-1 top-1 hover:bg-muted-foreground bg-secondary p-1 cursor-pointer" @click.stop="confirmDeletePhoto">
               <Trash2 />
             </div>
             <AvatarImage :src="previewImage" />
           </template>
-          <div class="rounded-lg p-1 flex flex-col items-center gap-2 absolute">
+          <div v-if="isAuthor" class="rounded-lg p-1 flex flex-col items-center gap-2 absolute">
             <CloudUpload :size="32" />
             <span class="font-semibold">Upload avatar</span>
           </div>
@@ -157,6 +157,7 @@ async function confirmDeletePhoto() {
             id="file"
             ref="refInput"
             type="file"
+            :disabled="!isAuthor"
             accept="image/*"
             class="hidden"
             @change="handleUploadImage($event, field)"

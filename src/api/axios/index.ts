@@ -24,7 +24,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config
 
-    if ((error.response && error.response.status === 401 && !originalRequest._retry) || error.response.status === 403) {
+    if ((error.response && error.response.status === 401 && !originalRequest._retry)) {
       originalRequest._retry = true
       const refreshToken = localStorage.getItem('refreshtoken')
 

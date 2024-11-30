@@ -15,6 +15,7 @@ export interface UserData {
   deleted_at: string | null
   created_at: string
   updated_at: string
+  upgrade_at: string | null
 }
 
 export interface RequestUpdateUser {

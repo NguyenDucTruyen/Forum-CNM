@@ -19,7 +19,6 @@ interface Props {
 }
 const itemComment = ref(props.comment)
 const isReplying = ref(false)
-const commentBox = ref<HTMLElement | null>(null)
 const isShowReply = ref(false)
 function handleUpdateComment(data: CommentData) {
   emit('updateComment', data)

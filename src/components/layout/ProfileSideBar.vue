@@ -11,7 +11,6 @@ const items = ref([
     title: 'General Information',
     icon: 'IconInfor',
     url: `/profile/${route.params.id}`,
-    // name: 'ProfileGeneralInformation',
   },
   {
     id: 1,
@@ -20,17 +19,17 @@ const items = ref([
     url: `/profile/${route.params.id}/blogs`,
   },
   {
-    id: 2,
-    title: 'Change Password',
-    icon: 'IconDoubleKey',
-    url: `/profile/${route.params.id}/changepassword`,
+    id: 3,
+    title: 'Billings & Plans',
+    icon: 'IconCoin',
+    url: `/profile/${route.params.id}/plans`,
     author: true,
   },
 ])
 const accessibleItems = computed(() => {
   return items.value.filter((item) => {
     if (item.author) {
-      return userStore.user?.id === route.params.id
+      return userStore.user?.id.toString() === route.params.id.toString()
     }
     return true
   })

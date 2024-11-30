@@ -41,6 +41,7 @@ fetchData()
 async function postComment(content: string) {
   const newComment = await commentStore.createComment({ content, blog_id: blog.value?.data.id as string })
   comments.value.push(newComment)
+  newComment.replies = []
 
   const container = document.querySelector('.container-default')
   if (container)
@@ -77,7 +78,7 @@ const nameAuthorDisplay = computed(() => {
 })
 
 const countComment = computed(() => {
-  return comments.value.reduce((count, comment) => count + comment.replies.length + 1, 0)
+  return comments.value.reduce((count, comment) => count + comment.replies?.length, 0)
 })
 
 const countLike = computed(() => {
