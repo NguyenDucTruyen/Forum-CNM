@@ -36,7 +36,9 @@ export interface ResponseDetailBlog {
   category: string
   data: BlogData
 }
-
+export interface RequestChangeStatus {
+  statusBlog: string
+}
 export const isActiveEnum = {
   BANNER: 'banner',
   ACTIVE: 'active',
@@ -46,9 +48,8 @@ export const isActiveEnum = {
 }
 
 export const statusEnum = {
-  PENDING: 'PENDING',
-  REJECTED: 'REJECTED',
-  APPROVED: 'APPROVED',
+  PENDING: 'pending',
+  ACCEPTED: 'accepted',
 }
 
 export const reactionEnum = {

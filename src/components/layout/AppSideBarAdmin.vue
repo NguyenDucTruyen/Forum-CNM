@@ -4,26 +4,26 @@ import { ArrowLeft } from 'lucide-vue-next'
 const items = ref([
   {
     id: 0,
-    title: 'User Management',
-    icon: 'IconAdmin',
+    title: 'Users Management',
+    icon: 'IconUserManage',
     url: '/admin',
   },
   {
     id: 1,
-    title: 'Category Management',
+    title: 'Categories Management',
     icon: 'IconCategory',
     url: '/admin/category',
   },
   {
     id: 2,
-    title: 'Publish Blog',
-    icon: 'IconCategory',
+    title: 'Published Blogs Management',
+    icon: 'IconOnline',
     url: '/admin/publishblog',
   },
   {
     id: 3,
-    title: 'Pending Blog',
-    icon: 'IconDocument',
+    title: 'Pending Blogs Management',
+    icon: 'IconPending',
     url: '/admin/pendingblog',
 
   },
@@ -38,7 +38,7 @@ const items = ref([
           <ArrowLeft /> Back to Home
         </Button>
       </RouterLink>
-      <Separator class="mb-2 hidden lg:flex" />
+      <Separator class="mb-2 bg-primary hidden lg:flex" />
       <h1 class="text-lg lg:inline-block hidden text-center w-full font-semibold mb-2">
         Admin Management
       </h1>

@@ -59,8 +59,8 @@ function handleDeleteQuery() {
 
 <template>
   <div class="rounded-lg p-6 bg-muted">
-    <h2 class="text-2xl font-bold mb-2">
-      Category: {{ category?.categoryName }}
+    <h2 class="text-2xl font-bold mb-4">
+      {{ category?.categoryName }}
     </h2>
     <div class="relative w-full flex justify-between items-center gap-4">
       <div class="relative w-full max-w-sm items-center">

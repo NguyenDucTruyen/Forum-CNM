@@ -18,7 +18,7 @@ export function apiGetBlogByUser(idUser: string, config: any): Promise<ResponseB
 }
 
 export async function apiCreateBlog(data: RequestCreateBlog): Promise<ResponseCreateBlog> {
-  return $post('/createBlog', { ...data, statusBlog: 'pending' })
+  return $post('/createBlog', { ...data, statusBlog: 'accepted' })
 }
 
 export async function apiUpdateBlog(id: string, data: RequestCreateBlog): Promise<ResponseCreateBlog> {

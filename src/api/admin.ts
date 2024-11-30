@@ -1,7 +1,8 @@
-import type { RequestCreateCategory, ResponseCategoryData, ResponseCreateCategory, ResponseListUser } from '@/types'
+import type { RequestChangeStatus, RequestCreateCategory, ResponseBlogData, ResponseCategoryData, ResponseCreateBlog, ResponseCreateCategory, ResponseListUser } from '@/types'
 
 import { $delete, $get, $post, $put } from './axios'
 
+// Usre
 export async function apiAdminChangeStatusUser(data: { user_id: string }) {
   return $put('/activeUser', data)
 }
@@ -10,6 +11,14 @@ export async function apiGetAllUsers(): Promise<ResponseListUser> {
   return $get('/getAll')
 }
 
+// BLog
+export async function apiGetPendingBlogs(config: any): Promise<ResponseBlogData> {
+  return $get('/getListPendingBlog', config)
+}
+export async function apiChangeStatusBlog(id: string, data: RequestChangeStatus): Promise<ResponseCreateBlog> {
+  return $put(`/updateBlogStatus/${id}`, data)
+}
+// Category
 export async function apiGetCategories() {
   return $get('/getListCategory') as Promise<ResponseCategoryData>
 }

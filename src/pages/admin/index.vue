@@ -54,6 +54,9 @@ async function handleChange(user: UserData, value: boolean) {
 </script>
 
 <template>
+  <h2 class="text-2xl text-center font-semibold">
+    Users Management
+  </h2>
   <div v-if="isLoading" class="flex w-full p-8 justify-center items-center">
     <Icon name="IconLoading" />
   </div>

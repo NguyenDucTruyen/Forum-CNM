@@ -99,7 +99,7 @@ function getDate(date: string) {
   <div v-else class="container mx-auto p-4">
     <div class="grid grid-cols-2">
       <h2 class="text-2xl font-semibold mb-4 ">
-        Category Management
+        Categories Management
       </h2>
       <div class="flex justify-end">
         <Button @click="modal.isOpen = true">
