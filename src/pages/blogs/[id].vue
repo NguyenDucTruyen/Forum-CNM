@@ -183,7 +183,9 @@ const userReaction = computed(() => {
         @delete="deleteComment"
       />
     </template>
-    <ChatBox/>
+    <ChatBox
+      :id-blog="blog.data.id"
+    />
   </section>
 </template>
 

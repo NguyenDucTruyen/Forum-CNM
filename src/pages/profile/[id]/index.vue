@@ -69,7 +69,7 @@ const onSubmit = handleSubmit(async (values) => {
       profileImage: url,
     }
     const data = await userStore.updateUserData(body)
-
+    userStore.getMe()
     user.value = data
     toast({
       title: 'Success',
@@ -79,7 +79,7 @@ const onSubmit = handleSubmit(async (values) => {
     resetData()
   }
   catch (error: Error | any) {
-     const data = error?.response?.data
+    const data = error?.response?.data
     const errorMessage = data?.error || data?.message || 'Some thing went wrong'
     toast({
       title: 'Error',

@@ -2,7 +2,6 @@
 <script setup lang="ts">
 import { uploadImage } from '@/api/upload'
 import { toast } from '@/components/ui/toast'
-import { sleep } from '@/utils/common'
 import BlotFormatter from 'quill-blot-formatter'
 import ImageUploader from 'quill-image-uploader'
 
