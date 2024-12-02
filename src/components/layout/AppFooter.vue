@@ -27,7 +27,7 @@ export default defineComponent({
             </div>
           </a>
           <h3 class="uppercase text-center text-primary">
-            Sgroup
+            Màu Xanh
           </h3>
           <h3 class="uppercase text-center text-primary">
             Think different - Make different
@@ -35,17 +35,20 @@ export default defineComponent({
         </div>
         <div class="space-y-3">
           <h3 class="uppercase text-foreground">
-            Specialization
+            Thành viên
           </h3>
           <ul class="space-y-1 text-foreground">
             <li class="py-[4px]">
-              <a rel="noopener noreferrer" href="#">Programming </a>
+              <a rel="noopener noreferrer" href="#">Đức Truyền </a>
             </li>
             <li class="py-[4px]">
-              <a rel="noopener noreferrer" href="#">Online marketing</a>
+              <a rel="noopener noreferrer" href="#">Mạnh Dũng</a>
             </li>
             <li class="py-[4px]">
-              <a rel="noopener noreferrer" href="#">Design </a>
+              <a rel="noopener noreferrer" href="#">Cẩm Ly</a>
+            </li>
+            <li class="py-[4px]">
+              <a rel="noopener noreferrer" href="#">Mỹ Hòa</a>
             </li>
           </ul>
         </div>

@@ -147,7 +147,7 @@ async function confirmDeletePhoto() {
             </div>
             <AvatarImage :src="previewImage" />
           </template>
-          <div v-if="isAuthor" class="rounded-lg p-1 flex flex-col items-center gap-2 absolute">
+          <div v-if="isAuthor && !previewImage" class="rounded-lg p-1 flex flex-col items-center gap-2 absolute">
             <CloudUpload :size="32" />
             <span class="font-semibold">Upload avatar</span>
           </div>
@@ -196,7 +196,7 @@ async function confirmDeletePhoto() {
           <template v-if="isAuthor" #default="{ componentField }">
             <FormControl>
               <RadioGroup
-                class="grid grid-cols-2 space-y-1"
+                class="grid grid-cols-3 space-y-1"
                 v-bind="componentField"
               >
                 <FormItem class="flex col-span-1 items-center space-y-0 gap-x-3">
@@ -213,6 +213,14 @@ async function confirmDeletePhoto() {
                   </FormControl>
                   <FormLabel class="font-normal">
                     Female
+                  </FormLabel>
+                </FormItem>
+                <FormItem class="flex col-span-1 items-center space-y-0 gap-x-3">
+                  <FormControl>
+                    <RadioGroupItem value="other" />
+                  </FormControl>
+                  <FormLabel class="font-normal">
+                    Other
                   </FormLabel>
                 </FormItem>
               </RadioGroup>

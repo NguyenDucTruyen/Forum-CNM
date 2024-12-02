@@ -26,7 +26,7 @@
               </div>
             </div>
           </div>
-          <AppFooter />
+          <!-- <AppFooter /> -->
         </div>
       </ScrollArea>
     </div>
