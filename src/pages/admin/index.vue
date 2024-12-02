@@ -40,11 +40,6 @@ const paginateUsers = computed(() => {
   return []
 })
 
-function getDate(date: string) {
-  if (!date)
-    return ''
-  return date.split(' ')[0]
-}
 async function handleChange(user: UserData, value: boolean) {
   adminStore.toggleUserStatus({ user_id: user.id })
   const currentUser = allUsers.value?.find(u => u.id === user.id)

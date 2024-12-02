@@ -149,7 +149,7 @@ function handleDeleteQuery() {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <RouterLink :to="`/blogs/${blog.id}`">
+                  <RouterLink :to="`/blogs/${blog.id}`" target="_blank">
                     {{ blog.title }}
                   </RouterLink>
                 </TooltipTrigger>
@@ -172,41 +172,41 @@ function handleDeleteQuery() {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            </div>
-            <div>{{ getDate(blog.created_at) }}</div>
-            <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  class="cursor-pointer w-12"
-                  as-child
-                >
-                  <Button variant="outline" class="w-12 p-0">
-                    Menu
+          </div>
+          <div>{{ getDate(blog.created_at) }}</div>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                class="cursor-pointer w-12"
+                as-child
+              >
+                <Button variant="outline" class="w-12 p-0">
+                  Menu
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent class="">
+                <DropdownMenuLabel class="text-center">
+                  Actions
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem class="cursor-pointer">
+                  <Button
+                    @click="revertBlog(blog.id)"
+                  >
+                    Revert Blog
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent class="">
-                  <DropdownMenuLabel class="text-center">
-                    Actions
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem class="cursor-pointer">
-                    <Button
-                      @click="revertBlog(blog.id)"
-                    >
-                      Revert Blog
-                    </Button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem class="cursor-pointer">
-                    <Button
-                      variant="destructive"
-                      @click="confirmDeleteBlog(blog.id)"
-                    >
-                      Delete Blog
-                    </Button>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem class="cursor-pointer">
+                  <Button
+                    variant="destructive"
+                    @click="confirmDeleteBlog(blog.id)"
+                  >
+                    Delete Blog
+                  </Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
         <PaginationTable
           :total="data.total"

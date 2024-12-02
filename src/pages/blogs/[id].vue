@@ -183,6 +183,7 @@ const userReaction = computed(() => {
         @delete="deleteComment"
       />
     </template>
+    <ChatBox/>
   </section>
 </template>
 
