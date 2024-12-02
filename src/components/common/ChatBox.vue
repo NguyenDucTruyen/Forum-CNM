@@ -24,33 +24,36 @@ const isChatVisible = ref<boolean>(false)
 const visibleGoDownButton = ref<boolean>(false)
 // Function to handle sending messages
 async function sendMessage() {
-  if (newMessage.value.trim() !== '') {
-    messages.value.push({
-      role: 'user',
-      content: newMessage.value,
-      id: uuidv4(),
-      blog_id: props.idBlog,
-      user_id: '',
-      created_at: new Date().toISOString(),
-    })
-    const messageSend = newMessage.value
-    newMessage.value = ''
-    const botMessage = {
-      role: 'bot',
-      content: '',
-      id: uuidv4(),
-      blog_id: props.idBlog,
-      user_id: '',
-      created_at: new Date().toISOString(),
-    }
-    messages.value.push(botMessage)
-    const { data: response } = await geminiStore.sendMessage(props.idBlog, messageSend)
-    const index = messages.value.findIndex((message: Message) => message.id === botMessage.id)
-    messages.value[index] = response
-    nextTick(() => {
-      goToBottom()
-    })
+  if (newMessage.value.trim() === '')
+    return
+  messages.value.push({
+    role: 'user',
+    content: newMessage.value,
+    id: uuidv4(),
+    blog_id: props.idBlog,
+    user_id: '',
+    created_at: new Date().toISOString(),
+  })
+
+  goToBottom()
+
+  const messageSend = newMessage.value
+  newMessage.value = ''
+  const botMessage = {
+    role: 'bot',
+    content: '',
+    id: uuidv4(),
+    blog_id: props.idBlog,
+    user_id: '',
+    created_at: new Date().toISOString(),
   }
+  messages.value.push(botMessage)
+  const { data: response } = await geminiStore.sendMessage(props.idBlog, messageSend)
+  const index = messages.value.findIndex((message: Message) => message.id === botMessage.id)
+  messages.value[index] = response
+  nextTick(() => {
+    goToBottom()
+  })
 }
 
 async function fetchData() {
