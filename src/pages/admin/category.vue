@@ -171,7 +171,7 @@ function getDate(date: string) {
       />
     </div>
   </div>
-  <CreateCategory"
+  <CreateCategory
     v-if="modal.isOpen"
     :value="modal.category"
     @cancel="cancel"

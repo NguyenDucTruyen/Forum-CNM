@@ -78,7 +78,7 @@ const nameAuthorDisplay = computed(() => {
 })
 
 const countComment = computed(() => {
-  return comments.value.reduce((count, comment) => count + comment.replies?.length, 0)
+  return comments.value.reduce((count, comment) => count + comment.replies?.length + 1, 0)
 })
 
 const countLike = computed(() => {
@@ -102,41 +102,43 @@ const userReaction = computed(() => {
     <Icon name="IconLoading" />
   </div>
   <section v-else-if="blog" class="mt-8 px-6 ">
-    <div class="grid lg:grid-cols-5 grid-cols-1">
+    <div class="grid lg:grid-cols-5 grid-cols-1 gap-2">
       <img
         v-lazy="blog.data.blogImage ?? null"
         alt=""
         class="w-24 h-24 object-cover rounded-lg"
       >
-      <div class="header relative lg:col-span-4">
-        <p class="text-3xl font-semibold lg:max-w-[46rem] pb-2">
-          {{ blog.data.title }}
-        </p>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-4">
-          <div class="meta-item">
-            <label>Author:</label>
-            <RouterLink :to="{ name: 'profile-id', params: { id: blog.data.user_id } }">
-              {{ nameAuthorDisplay }}
-            </RouterLink>
-          </div>
-          <div class="meta-item">
-            <label>Category:</label>
-            <RouterLink :to="`/blogs/category/${blog.data.category_id}`">
-              {{ blog.category }}
-            </RouterLink>
-          </div>
-          <div class="meta-item">
-            <label>Published: {{ blog.data.created_at.split('T')[0] }}</label>
+      <div class="grid  grid-cols-1 lg:grid-cols-5 lg:col-span-4 gap-2">
+        <div class="header relative lg:col-span-4 grid-cols-1">
+          <p class="text-3xl font-semibold lg:max-w-[46rem] pb-2">
+            {{ blog.data.title }}
+          </p>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-4">
+            <div class="meta-item">
+              <label>Author:</label>
+              <RouterLink :to="{ name: 'profile-id', params: { id: blog.data.user_id } }">
+                {{ nameAuthorDisplay }}
+              </RouterLink>
+            </div>
+            <div class="meta-item">
+              <label>Category:</label>
+              <RouterLink :to="`/blogs/category/${blog.data.category_id}`">
+                {{ blog.category }}
+              </RouterLink>
+            </div>
+            <div class="meta-item">
+              <label>Published: {{ blog.data.created_at.split('T')[0] }}</label>
+            </div>
           </div>
         </div>
-        <RouterLink to="/blogs/create" class="lg:absolute top-0 right-0">
+        <RouterLink to="/blogs/create">
           <Button class="mb-4 lg:mb-0 ">
             Create Blog
           </Button>
         </RouterLink>
-        <Separator />
       </div>
     </div>
+    <Separator />
     <div class="ql-snow content">
       <div class="ql-editor" v-html="blog?.data.content" />
     </div>

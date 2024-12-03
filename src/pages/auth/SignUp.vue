@@ -26,7 +26,9 @@ const form = useForm({
 const isLoading = ref(false)
 const onSubmit = form.handleSubmit(async (values) => {
   try {
+    isLoading.value = true
     await authStore.sendOTPSignup(values)
+    isLoading.value = false
     toast({
       title: 'Success',
       description: 'Email sent successfully, check your inbox',
@@ -34,7 +36,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     router.push(`/auth/register-account?email=${values.email}`)
   }
   catch (error: Error | any) {
-     const data = error?.response?.data
+    const data = error?.response?.data
     const errorMessage = data?.error || data?.message || 'Some thing went wrong'
     toast({
       title: 'Error',

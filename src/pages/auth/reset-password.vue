@@ -28,7 +28,9 @@ const form = useForm({
 const isLoading = ref(false)
 const onSubmit = form.handleSubmit(async (values) => {
   try {
+    isLoading.value = true
     await authStore.resetPassword(values)
+    isLoading.value = false
     toast({
       title: 'Success',
       description: 'Password reset successfully',
@@ -36,7 +38,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     router.push('/auth/login')
   }
   catch (error: Error | any) {
-     const data = error?.response?.data
+    const data = error?.response?.data
     const errorMessage = data?.error || data?.message || 'Some thing went wrong'
     toast({
       title: 'Error',

@@ -24,7 +24,9 @@ const form = useForm({
 const isLoading = ref(false)
 const onSubmit = form.handleSubmit(async (values) => {
   try {
+    isLoading.value = true
     await authStore.sendEmailResetPassword(values)
+    isLoading.value = false
     toast({
       title: 'Success',
       description: 'Email sent successfully, check your inbox',
@@ -52,7 +54,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     <Card class="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle class="text-2xl text-center">
-          Reset Password
+          Forgot Password
         </CardTitle>
         <CardDescription class="text-center">
           Enter your email below to reset your password
