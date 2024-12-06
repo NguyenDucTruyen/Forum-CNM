@@ -151,9 +151,7 @@ function handleScroll() {
         <div ref="chatContainer" class="chatContainer">
           <div v-for="(message, index) in messages" :key="index" class="mb-10">
             <div v-if="message.role === 'user'" class="flex justify-end gap-2">
-              <div class="bg-primary text-white p-2 rounded-lg">
-                {{ message.content }}
-              </div>
+              <div class="bg-primary text-white p-2 rounded-lg" v-html="message.content" />
               <img
                 v-if="userStore.user"
                 v-lazy="userStore.user.profileImage ?? 'https://static.vecteezy.com/system/resources/thumbnails/024/983/914/small_2x/simple-user-default-icon-free-png.png'"
@@ -167,9 +165,7 @@ function handleScroll() {
                 alt="Bot"
                 class="w-7 h-7 rounded-full"
               >
-              <div v-if="message.content" class="bg-slate-200 text-black p-2 rounded-lg">
-                {{ message.content }}
-              </div>
+              <div v-if="message.content" class="bg-slate-200 text-black p-2 rounded-lg" v-html="message.content" />
               <div v-else class="bg-slate-200 text-black p-2 rounded-lg">
                 <Icon name="IconTyping" />
               </div>

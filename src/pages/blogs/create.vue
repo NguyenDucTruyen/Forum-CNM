@@ -81,7 +81,7 @@ const onSubmit = handleSubmit(async (values) => {
     await blogStore.createBlog(body as RequestCreateBlog)
     toast({
       title: 'Success',
-      description: 'Blog created successfully.',
+      description: 'Blog created successfully, wait for admin approval',
     })
     resetData()
   }

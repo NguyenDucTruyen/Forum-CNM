@@ -149,7 +149,7 @@ function handleDeleteQuery() {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <RouterLink :to="`/blogs/${blog.id}`">
+                  <RouterLink :to="`/blogs/${blog.id}`" target="_blank">
                     {{ blog.title }}
                   </RouterLink>
                 </TooltipTrigger>
